@@ -6,8 +6,8 @@
 
 // ここにスプレッドシートのCSVエクスポートURLを設定してください。
 // スプレッドシートは「共有」→「リンクを知っている全員」→「閲覧者」にしてください。
-const MANSION_CSV_URL   = "https://docs.google.com/spreadsheets/d/1vXbeThVvmCtfOaPqshAWNO1A7GCvZBjFfhI3nF1dxqc/export?format=csv&gid=1017798713";
-const CARDBOARD_CSV_URL = "https://docs.google.com/spreadsheets/d/12LqU1iXwXf0axylBKSJwPSiE-kgMUMsvyxmDP7Mzjgs/export?format=csv&gid=595853336";
+const MANSION_CSV_URL   = "https://docs.google.com/spreadsheets/d/1KFMQ2Wv7swnI_HQjVnb-ksLniNAE3HRUCz0yhNjQj38/export?format=csv&gid=1202227494";
+const CARDBOARD_CSV_URL = "https://docs.google.com/spreadsheets/d/1dJ6bEnD_sJxv84rOCOv9qhjszs9I6tal0veM1pIZ3-0/export?format=csv&gid=1352463638";
 
 function escapeHtml(s) {
   return String(s == null ? "" : s)
