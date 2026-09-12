@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --red: #C0233B;
+    --red-deep: #96182D;
+    --mint: #B9D2C4;
+    --mint-pale: #E9F1EC;
+    --ink: #191512;
+    --paper: #F6F2E9;
+    --amber: #E0A83E;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{width:1200px; height:630px; overflow:hidden;}
+  body{
+    position:relative;
+    background:var(--red);
+    background-image:
+      radial-gradient(circle at 88% 20%, rgba(255,255,255,0.08), transparent 45%),
+      linear-gradient(180deg, var(--red) 0%, var(--red-deep) 100%);
+    color:var(--paper);
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 70px;
+  }
+  .left{
+    max-width:640px;
+    z-index:2;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:20px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--mint-pale);
+    opacity:0.85;
+    margin-bottom:26px;
+    display:flex; align-items:center; gap:14px;
+  }
+  .eyebrow::before{content:''; width:36px; height:2px; background:var(--mint-pale); opacity:0.6;}
+  h1{
+    font-family:'Shippori Mincho', serif;
+    font-weight:700;
+    font-size:64px;
+    line-height:1.35;
+    letter-spacing:0.02em;
+  }
+  .sub{
+    margin-top:26px;
+    font-size:22px;
+    line-height:1.6;
+    color:var(--mint-pale);
+    opacity:0.92;
+    max-width:34ch;
+  }
+  .right{
+    position:relative;
+    width:420px;
+    height:420px;
+    flex-shrink:0;
+    z-index:2;
+  }
+  .right img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:8px;
+    box-shadow:0 30px 60px rgba(0,0,0,0.35);
+    border:4px solid rgba(246,242,233,0.35);
+  }
+  .stamp{
+    position:absolute;
+    bottom:44px;
+    right:70px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:16px;
+    letter-spacing:0.1em;
+    color:var(--mint-pale);
+    opacity:0.6;
+    z-index:2;
+  }
+</style>
+</head>
+<body>
+  <div class="left">
+    <div class="eyebrow">AI VIDEO CREATOR / @minmin_4410</div>
+    <h1>AIと創る、<br>規格外の映像とIP。</h1>
+    <div class="sub">コメディ・ショート動画から、ショートフィルム、ミュージックビデオまで。企画から仕上げまで一貫して手掛けています。</div>
+  </div>
+  <div class="right">
+    <img src="https://raw.githubusercontent.com/minmin4410/minmin-portfolio/main/images/misc/hero-icon.png" alt="minmin">
+  </div>
+</body>
+</html>
