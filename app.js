@@ -85,7 +85,44 @@ function loadSheet(url, containerId, renderFn) {
   });
 }
 
+function loadAnnouncement() {
+  var banner = document.getElementById("announcementBanner");
+  var textEl = document.getElementById("announcementText");
+  var closeBtn = document.getElementById("announcementClose");
+  if (!banner || !textEl) return;
+
+  fetch("announcement.json", { cache: "no-store" })
+    .then(function (res) {
+      if (!res.ok) throw new Error("announcement.json not found");
+      return res.json();
+    })
+    .then(function (data) {
+      if (!data || !data.enabled || !data.text) return;
+
+      var dismissKey = "minmin_announcement_dismissed_" + (data.text + "|" + (data.linkUrl || "")).length + "_" + encodeURIComponent(data.text).slice(0, 40);
+      if (sessionStorage.getItem(dismissKey) === "1") return;
+
+      var html = escapeHtml(data.text);
+      if (data.linkUrl) {
+        html += ' <a href="' + escapeHtml(data.linkUrl) + '" target="_blank" rel="noopener">' + escapeHtml(data.linkLabel || "詳しくはこちら") + "</a>";
+      }
+      textEl.innerHTML = html;
+      banner.style.display = "block";
+
+      if (closeBtn) {
+        closeBtn.addEventListener("click", function () {
+          banner.style.display = "none";
+          sessionStorage.setItem(dismissKey, "1");
+        });
+      }
+    })
+    .catch(function () {
+      /* announcement.json がない/読み込めない場合は何もしない */
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
+  loadAnnouncement();
   loadSheet(MANSION_CSV_URL, "mansion-grid", renderMansionCard);
   loadSheet(CARDBOARD_CSV_URL, "cardboard-grid", renderCardboardCard);
 

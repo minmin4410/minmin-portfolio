@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>minmin | AIと創る、規格外の映像とIP。</title>
-  <meta name="description" content="コメディ・ショート動画から、ショートフィルム、ミュージックビデオまで。AI生成ツールを駆使し、企画から仕上げまで一貫して手掛けています。">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://minmin4410.github.io/minmin-portfolio/">
-  <meta property="og:title" content="minmin | AIと創る、規格外の映像とIP。">
-  <meta property="og:description" content="コメディ・ショート動画から、ショートフィルム、ミュージックビデオまで。AI生成ツールを駆使し、企画から仕上げまで一貫して手掛けています。">
-  <meta property="og:image" content="https://minmin4410.github.io/minmin-portfolio/images/misc/screenshot-1789193624045-25f75b3c.png">
-  <meta property="og:locale" content="ja_JP">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:site" content="@minmin_4410">
-  <meta name="twitter:title" content="minmin | AIと創る、規格外の映像とIP。">
-  <meta name="twitter:description" content="コメディ・ショート動画から、ショートフィルム、ミュージックビデオまで。AI生成ツールを駆使し、企画から仕上げまで一貫して手掛けています。">
-  <meta name="twitter:image" content="https://minmin4410.github.io/minmin-portfolio/images/misc/screenshot-1789193624045-25f75b3c.png">
+<meta name="description" content="コメディ・ショート動画から、ショートフィルム、ミュージックビデオまで。AI生成ツールを駆使し、企画から仕上げまで一貫して手掛けています。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://minmin4410.github.io/minmin-portfolio/">
+<meta property="og:title" content="minmin | AIと創る、規格外の映像とIP。">
+<meta property="og:description" content="コメディ・ショート動画から、ショートフィルム、ミュージックビデオまで。AI生成ツールを駆使し、企画から仕上げまで一貫して手掛けています。">
+<meta property="og:image" content="https://minmin4410.github.io/minmin-portfolio/images/misc/screenshot-1789193624045-25f75b3c.png">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@minmin_4410">
+<meta name="twitter:title" content="minmin | AIと創る、規格外の映像とIP。">
+<meta name="twitter:description" content="コメディ・ショート動画から、ショートフィルム、ミュージックビデオまで。AI生成ツールを駆使し、企画から仕上げまで一貫して手掛けています。">
+<meta name="twitter:image" content="https://minmin4410.github.io/minmin-portfolio/images/misc/screenshot-1789193624045-25f75b3c.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
@@ -24,14 +24,17 @@
 
 <div class="scroll-progress-track"><div class="scroll-progress-bar" id="scrollProgressBar"></div></div>
 
-<div class="note-banner">※ これはレイアウト確認用のモックアップです。動画・実データは後で差し替え予定</div>
-
 <nav>
   <div class="nav-logo">minmin <span class="mono" style="font-size:0.6rem; opacity:0.5;">portfolio</span></div>
-  <div class="nav-links">
-    <a href="#works">WORKS</a>
-    <a href="#mansion">CHARACTER</a>
-    <a href="#contact">CONTACT</a>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="#works">WORKS</a>
+      <a href="#mansion">CHARACTER</a>
+      <a href="#contact">CONTACT</a>
+    </div>
+    <a href="https://x.com/minmin_4410" target="_blank" rel="noopener" class="nav-x" aria-label="X(Twitter)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
   </div>
 </nav>
 
@@ -45,7 +48,14 @@
     <a href="#mansion" class="btn btn-ghost">キャラクターを見る</a>
     <a href="#contact" class="btn btn-ghost">制作の相談をする</a>
   </div>
-  <div class="hanko"><img src="images/misc/hero-icon.png" alt="minmin icon"></div>
+  <div class="hanko-wrap">
+    <div class="announcement-bubble" id="announcementBanner" style="display:none;">
+      <button type="button" class="bubble-close" id="announcementClose" aria-label="閉じる">×</button>
+      <span id="announcementText"></span>
+      <div class="bubble-tail"></div>
+    </div>
+    <div class="hanko"><img src="images/misc/hero-icon.png" alt="minmin icon"></div>
+  </div>
 </div>
 
 <!-- FEATURED WORKS: VIDEO MOSAIC -->

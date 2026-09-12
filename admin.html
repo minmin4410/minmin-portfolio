@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>minmin portfolio | お知らせ管理</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --red: #C0233B;
+    --red-deep: #96182D;
+    --mint: #B9D2C4;
+    --mint-pale: #E9F1EC;
+    --ink: #191512;
+    --paper: #F6F2E9;
+    --amber: #E0A83E;
+    --line: rgba(25,21,18,0.12);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    padding:40px 20px 100px;
+  }
+  .wrap{max-width:760px; margin:0 auto;}
+  h1{
+    font-family:'Shippori Mincho', serif;
+    font-size:1.6rem;
+    margin-bottom:6px;
+  }
+  .lead{font-size:0.85rem; opacity:0.7; margin-bottom:36px; line-height:1.7;}
+  .card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:28px;
+    margin-bottom:28px;
+  }
+  .card h2{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.85rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--red-deep);
+    margin-bottom:18px;
+  }
+  label{
+    display:block;
+    font-size:0.82rem;
+    font-weight:700;
+    margin-bottom:6px;
+    margin-top:18px;
+  }
+  label:first-of-type{margin-top:0;}
+  .hint{font-size:0.75rem; opacity:0.6; margin-top:4px; line-height:1.5;}
+  input[type=text], textarea{
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:10px 12px;
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    font-size:0.9rem;
+    background:var(--paper);
+    color:var(--ink);
+  }
+  textarea{resize:vertical; min-height:70px; line-height:1.6;}
+  input[type=text]:focus, textarea:focus{outline:2px solid var(--red); outline-offset:1px;}
+  .toggle-row{
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:4px;
+  }
+  .toggle-row input{width:18px; height:18px;}
+  .toggle-row span{font-size:0.9rem; font-weight:700;}
+
+  /* --- preview (吹き出し) --- */
+  .preview-label{font-size:0.75rem; opacity:0.6; margin-bottom:10px; font-family:'JetBrains Mono', monospace;}
+  .preview-stage{
+    background:var(--red);
+    border-radius:8px;
+    padding:32px 24px;
+    display:flex;
+    justify-content:flex-end;
+  }
+  .preview-hanko-wrap{display:flex; flex-direction:column; align-items:flex-end;}
+  .banner-preview{
+    position:relative;
+    margin-bottom:12px;
+    max-width:260px;
+    width:max-content;
+    background:var(--paper);
+    color:var(--ink);
+    font-size:0.82rem;
+    line-height:1.6;
+    padding:12px 30px 12px 16px;
+    border-radius:16px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.25);
+    font-family:'Zen Kaku Gothic New', sans-serif;
+  }
+  .banner-preview.empty{opacity:0.5; font-style:italic;}
+  .banner-preview a{color:var(--red-deep); text-decoration:underline; font-weight:700;}
+  .banner-preview .x{
+    position:absolute; top:6px; right:8px;
+    font-family:'JetBrains Mono', monospace; font-size:0.9rem; opacity:0.5; cursor:pointer;
+  }
+  .banner-preview .tail{
+    position:absolute; bottom:-8px; right:24px;
+    width:0; height:0;
+    border-left:9px solid transparent;
+    border-right:4px solid transparent;
+    border-top:11px solid var(--paper);
+  }
+  .preview-hanko{
+    width:64px; height:64px;
+    border-radius:50%;
+    background:var(--mint-pale);
+    border:3px solid var(--mint-pale);
+    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Shippori Mincho', serif;
+    font-weight:700;
+    color:var(--red-deep);
+    transform:rotate(-6deg);
+  }
+
+  .btn{
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    font-weight:700;
+    font-size:0.85rem;
+    padding:11px 22px;
+    border-radius:3px;
+    border:none;
+    cursor:pointer;
+    transition:transform 0.15s ease, opacity 0.15s ease;
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{background:var(--red); color:var(--paper);}
+  .btn-ghost{background:transparent; color:var(--ink); border:1px solid var(--line);}
+  .btn-row{display:flex; gap:12px; margin-top:20px; flex-wrap:wrap;}
+
+  .json-box{
+    width:100%;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.78rem;
+    background:var(--ink);
+    color:var(--mint-pale);
+    border:none;
+    border-radius:4px;
+    padding:16px;
+    min-height:130px;
+    white-space:pre;
+    overflow-x:auto;
+  }
+  .copied-msg{
+    font-size:0.78rem; color:var(--red-deep); font-weight:700;
+    margin-left:10px; opacity:0; transition:opacity 0.2s ease;
+  }
+  .copied-msg.show{opacity:1;}
+
+  .steps{
+    font-size:0.82rem; line-height:2;
+  }
+  .steps b{color:var(--red-deep);}
+
+  .savebar{
+    font-size:0.72rem; opacity:0.5; margin-top:10px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>お知らせ管理</h1>
+  <p class="lead">
+    ここで入力した内容が、トップ画面右下のアイコンの「吹き出し」に反映されます。<br>
+    このページは検索エンジンには表示されず、URLを知っている人だけがアクセスできます。<br>
+    入力してもサイトには即反映されません。下部で生成される announcement.json をアップロードして初めて反映されます。
+  </p>
+
+  <div class="card">
+    <h2>Step 1. 内容を入力</h2>
+
+    <div class="toggle-row">
+      <input type="checkbox" id="enabled">
+      <span>お知らせバナーを表示する</span>
+    </div>
+    <p class="hint">チェックを外すと、テキストが入っていてもサイトには表示されません。</p>
+
+    <label for="text">本文</label>
+    <textarea id="text" placeholder="例）9/20 新作ミュージックビデオを公開しました！"></textarea>
+
+    <label for="linkUrl">リンクURL（任意）</label>
+    <input type="text" id="linkUrl" placeholder="https://...">
+    <p class="hint">記入すると本文の横にリンクボタンが表示されます。空欄ならリンクなしのテキストのみになります。</p>
+
+    <label for="linkLabel">リンクの表示文言（任意）</label>
+    <input type="text" id="linkLabel" placeholder="詳しくはこちら">
+  </div>
+
+  <div class="card">
+    <h2>Step 2. プレビュー</h2>
+    <p class="preview-label">実際のサイトではアイコンが「しゃべっている」吹き出しとして表示されます</p>
+    <div class="preview-stage">
+      <div class="preview-hanko-wrap">
+        <div class="banner-preview empty" id="preview">
+          内容を入力するとここにプレビューが表示されます
+          <span class="x">×</span>
+          <span class="tail"></span>
+        </div>
+        <div class="preview-hanko">m</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Step 3. アップロード用データを生成</h2>
+    <p class="hint" style="margin-top:0;">下のJSONをそのまま announcement.json として保存 → GitHub の minmin-portfolio 直下にアップロード（上書き）してcommitすると、サイトに反映されます。</p>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="downloadBtn">⬇ announcement.json をダウンロード</button>
+      <button class="btn btn-ghost" id="copyBtn">JSONをコピー</button>
+      <span class="copied-msg" id="copiedMsg">コピーしました</span>
+    </div>
+    <label style="margin-top:24px;">生成されたJSON</label>
+    <div class="json-box" id="jsonOut"></div>
+
+    <div style="margin-top:24px;" class="steps">
+      <b>①</b> 上の「ダウンロード」ボタンで announcement.json を保存<br>
+      <b>②</b> GitHubのリポジトリ直下（index.html と同じ階層）にアップロードして commit<br>
+      <b>③</b> 数十秒でサイトに反映されます（自分でやるのが不安な場合はこのJSONをそのままClaudeに貼って「これを反映して」と伝えればOKです）
+    </div>
+  </div>
+
+  <p class="savebar">※ このページで入力した内容は、ブラウザ内に自動保存されます（次回このページを開いたときに復元されます）。</p>
+</div>
+
+<script>
+  const els = {
+    enabled: document.getElementById('enabled'),
+    text: document.getElementById('text'),
+    linkUrl: document.getElementById('linkUrl'),
+    linkLabel: document.getElementById('linkLabel'),
+    preview: document.getElementById('preview'),
+    jsonOut: document.getElementById('jsonOut'),
+    downloadBtn: document.getElementById('downloadBtn'),
+    copyBtn: document.getElementById('copyBtn'),
+    copiedMsg: document.getElementById('copiedMsg'),
+  };
+
+  const STORAGE_KEY = 'minmin_admin_announcement_draft';
+
+  function loadDraft(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return;
+      const data = JSON.parse(raw);
+      els.enabled.checked = !!data.enabled;
+      els.text.value = data.text || '';
+      els.linkUrl.value = data.linkUrl || '';
+      els.linkLabel.value = data.linkLabel || '';
+    }catch(e){ /* ignore */ }
+  }
+
+  function currentData(){
+    return {
+      enabled: els.enabled.checked,
+      text: els.text.value.trim(),
+      linkUrl: els.linkUrl.value.trim(),
+      linkLabel: els.linkLabel.value.trim() || '詳しくはこちら',
+    };
+  }
+
+  function saveDraft(data){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }catch(e){ /* ignore */ }
+  }
+
+  function escapeHtml(s){
+    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function render(){
+    const data = currentData();
+    saveDraft(data);
+
+    // preview
+    if(!data.text){
+      els.preview.classList.add('empty');
+      els.preview.innerHTML = '内容を入力するとここにプレビューが表示されます<span class="x">×</span><span class="tail"></span>';
+    } else {
+      els.preview.classList.remove('empty');
+      let html = escapeHtml(data.text);
+      if(data.linkUrl){
+        html += ' <a href="' + escapeHtml(data.linkUrl) + '" target="_blank" rel="noopener">' + escapeHtml(data.linkLabel) + '</a>';
+      }
+      html += '<span class="x">×</span><span class="tail"></span>';
+      els.preview.innerHTML = html;
+    }
+    if(!data.enabled){
+      els.preview.style.outline = '2px dashed rgba(192,35,59,0.4)';
+    } else {
+      els.preview.style.outline = 'none';
+    }
+
+    // json
+    els.jsonOut.textContent = JSON.stringify(data, null, 2);
+  }
+
+  ['input','change'].forEach(evt => {
+    els.enabled.addEventListener(evt, render);
+    els.text.addEventListener(evt, render);
+    els.linkUrl.addEventListener(evt, render);
+    els.linkLabel.addEventListener(evt, render);
+  });
+
+  els.downloadBtn.addEventListener('click', () => {
+    const data = currentData();
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'announcement.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  els.copyBtn.addEventListener('click', async () => {
+    const data = currentData();
+    try{
+      await navigator.clipboard.writeText(JSON.stringify(data, null, 2));
+      els.copiedMsg.classList.add('show');
+      setTimeout(() => els.copiedMsg.classList.remove('show'), 1800);
+    }catch(e){
+      alert('コピーに失敗しました。JSON欄を手動で選択してコピーしてください。');
+    }
+  });
+
+  loadDraft();
+  render();
+</script>
+</body>
+</html>
