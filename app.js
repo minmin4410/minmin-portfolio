@@ -128,6 +128,12 @@ function setupCursorPicker() {
   // ページ内のクリック可能要素(リンク/ボタンなど)。ここに乗ったらカーソルの縁を光らせる。
   var CLICKABLE_SELECTOR = 'a, button, [role="button"], input[type="submit"], input[type="button"], label, summary';
 
+  // 二重初期化対策: 既存のフォロワー要素があれば先に削除しておく
+  var existingFollowers = document.querySelectorAll(".custom-cursor-follower");
+  existingFollowers.forEach(function (el) {
+    el.remove();
+  });
+
   var follower = document.createElement("img");
   follower.className = "custom-cursor-follower";
   follower.alt = "";
