@@ -142,7 +142,9 @@ function setupCursorPicker() {
   var hotspot = { x: 0, y: 0 };
   var hasFinePointer = window.matchMedia && window.matchMedia("(pointer: fine)").matches;
   var tracking = false;
-  var sizeMultiplier = 1;
+  // カーソル画像は「大」の実寸(192px)で書き出してあるので、
+  // 「小」は縮小表示、「大」は原寸表示にして常にくっきり見えるようにする。
+  var sizeMultiplier = 0.5;
 
   function updateFollowerSize() {
     if (follower.naturalWidth) {
@@ -220,7 +222,7 @@ function setupCursorPicker() {
         b.classList.remove("active");
       });
       btn.classList.add("active");
-      sizeMultiplier = btn.getAttribute("data-size") === "large" ? 2 : 1;
+      sizeMultiplier = btn.getAttribute("data-size") === "large" ? 1 : 0.5;
       updateFollowerSize();
     });
   });
