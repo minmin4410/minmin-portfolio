@@ -144,7 +144,8 @@ function setupCursorPicker() {
   var tracking = false;
   // カーソル画像は「大」の実寸(192px)で書き出してあるので、
   // 「小」は縮小表示、「大」は原寸表示にして常にくっきり見えるようにする。
-  var sizeMultiplier = 0.5;
+  // 初期表示は「大」。
+  var sizeMultiplier = 1;
 
   function updateFollowerSize() {
     if (follower.naturalWidth) {
