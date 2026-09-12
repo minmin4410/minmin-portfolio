@@ -49,23 +49,41 @@
   .nav-x:hover{opacity:1; transform:translateY(-1px);}
   .nav-x::after{display:none;}
 
-  .cursor-picker{display:flex; align-items:center; gap:6px;}
+  .cursor-picker{display:flex; align-items:center; gap:10px;}
   .cursor-pick{
-    width:24px; height:24px;
+    width:48px; height:48px;
     border-radius:50%;
     overflow:hidden;
     padding:0;
-    border:1.5px solid rgba(25,21,18,0.18);
+    border:2px solid rgba(25,21,18,0.18);
     background:var(--paper);
     cursor:pointer;
     display:flex; align-items:center; justify-content:center;
     transition:transform 0.2s ease, border-color 0.2s ease;
     flex-shrink:0;
   }
-  .cursor-pick:hover{transform:scale(1.18); border-color:var(--red);}
-  .cursor-pick.active{border-color:var(--red); border-width:2px;}
+  .cursor-pick:hover{transform:scale(1.14); border-color:var(--red);}
+  .cursor-pick.active{border-color:var(--red); border-width:3px;}
   .cursor-pick img{width:100%; height:100%; object-fit:cover;}
-  .cursor-pick svg{width:13px; height:13px; color:var(--ink); opacity:0.55;}
+  .cursor-pick svg{width:24px; height:24px; color:var(--ink); opacity:0.55;}
+
+  .custom-cursor-follower{
+    position:fixed;
+    top:0; left:0;
+    pointer-events:none;
+    z-index:9999;
+    display:none;
+    filter:none;
+    transition:filter 0.15s ease;
+    will-change:transform;
+  }
+  .custom-cursor-follower.hovering{
+    filter:drop-shadow(0 0 3px var(--red)) drop-shadow(0 0 8px var(--red));
+  }
+  html.custom-cursor-active,
+  html.custom-cursor-active *{
+    cursor:none !important;
+  }
 
   /* ===== HERO ===== */
   .hero{

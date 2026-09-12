@@ -125,6 +125,50 @@ function setupCursorPicker() {
   var picks = document.querySelectorAll(".cursor-pick");
   if (!picks.length) return;
 
+  // ページ内のクリック可能要素(リンク/ボタンなど)。ここに乗ったらカーソルの縁を光らせる。
+  var CLICKABLE_SELECTOR = 'a, button, [role="button"], input[type="submit"], input[type="button"], label, summary';
+
+  var follower = document.createElement("img");
+  follower.className = "custom-cursor-follower";
+  follower.alt = "";
+  document.body.appendChild(follower);
+
+  var hotspot = { x: 0, y: 0 };
+  var hasFinePointer = window.matchMedia && window.matchMedia("(pointer: fine)").matches;
+  var tracking = false;
+
+  function moveFollower(e) {
+    follower.style.transform = "translate(" + (e.clientX - hotspot.x) + "px," + (e.clientY - hotspot.y) + "px)";
+  }
+
+  function isHoverable(target) {
+    if (!target || !target.closest) return false;
+    var el = target.closest(CLICKABLE_SELECTOR);
+    return !!(el && !el.closest(".cursor-picker"));
+  }
+
+  function onOver(e) {
+    if (isHoverable(e.target)) follower.classList.add("hovering");
+  }
+  function onOut(e) {
+    if (isHoverable(e.target)) follower.classList.remove("hovering");
+  }
+
+  function startTracking() {
+    if (tracking) return;
+    document.addEventListener("mousemove", moveFollower);
+    document.addEventListener("mouseover", onOver);
+    document.addEventListener("mouseout", onOut);
+    tracking = true;
+  }
+  function stopTracking() {
+    if (!tracking) return;
+    document.removeEventListener("mousemove", moveFollower);
+    document.removeEventListener("mouseover", onOver);
+    document.removeEventListener("mouseout", onOut);
+    tracking = false;
+  }
+
   function applyCursor(btn) {
     picks.forEach(function (b) {
       b.classList.remove("active");
@@ -132,11 +176,17 @@ function setupCursorPicker() {
     btn.classList.add("active");
     var url = btn.getAttribute("data-cursor");
     if (!url || url === "none") {
-      document.documentElement.style.cursor = "";
+      document.documentElement.classList.remove("custom-cursor-active");
+      follower.style.display = "none";
+      follower.classList.remove("hovering");
+      stopTracking();
     } else {
-      var hx = btn.getAttribute("data-hx") || 0;
-      var hy = btn.getAttribute("data-hy") || 0;
-      document.documentElement.style.cursor = 'url("' + url + '") ' + hx + " " + hy + ", auto";
+      hotspot.x = parseInt(btn.getAttribute("data-hx") || "0", 10);
+      hotspot.y = parseInt(btn.getAttribute("data-hy") || "0", 10);
+      follower.src = url;
+      follower.style.display = "block";
+      document.documentElement.classList.add("custom-cursor-active");
+      startTracking();
     }
   }
 
@@ -146,17 +196,22 @@ function setupCursorPicker() {
     });
   });
 
-  // 初期表示: キャラクターの中からランダムに選択(見つからなければメロモンタ、それも無ければ先頭)
+  // 初期表示: マウス操作の環境でのみキャラクターの中からランダムに選択(見つからなければメロモンタ、それも無ければ「なし」)
   var charPicks = Array.prototype.filter.call(picks, function (b) {
     var c = b.getAttribute("data-cursor");
     return c && c !== "none";
   });
   var initial = null;
-  if (charPicks.length > 0) {
-    initial = charPicks[Math.floor(Math.random() * charPicks.length)];
+  if (hasFinePointer) {
+    if (charPicks.length > 0) {
+      initial = charPicks[Math.floor(Math.random() * charPicks.length)];
+    }
+    if (!initial) {
+      initial = document.querySelector('.cursor-pick[data-cursor*="meromonta"]');
+    }
   }
   if (!initial) {
-    initial = document.querySelector('.cursor-pick[data-cursor*="meromonta"]') || picks[0];
+    initial = picks[0];
   }
   applyCursor(initial);
 }
