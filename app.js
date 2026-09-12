@@ -136,9 +136,19 @@ function setupCursorPicker() {
   var hotspot = { x: 0, y: 0 };
   var hasFinePointer = window.matchMedia && window.matchMedia("(pointer: fine)").matches;
   var tracking = false;
+  var sizeMultiplier = 1;
+
+  function updateFollowerSize() {
+    if (follower.naturalWidth) {
+      follower.style.width = follower.naturalWidth * sizeMultiplier + "px";
+      follower.style.height = follower.naturalHeight * sizeMultiplier + "px";
+    }
+  }
+  follower.addEventListener("load", updateFollowerSize);
 
   function moveFollower(e) {
-    follower.style.transform = "translate(" + (e.clientX - hotspot.x) + "px," + (e.clientY - hotspot.y) + "px)";
+    follower.style.transform =
+      "translate(" + (e.clientX - hotspot.x * sizeMultiplier) + "px," + (e.clientY - hotspot.y * sizeMultiplier) + "px)";
   }
 
   function isHoverable(target) {
@@ -193,6 +203,19 @@ function setupCursorPicker() {
   picks.forEach(function (btn) {
     btn.addEventListener("click", function () {
       applyCursor(btn);
+    });
+  });
+
+  // カーソルサイズ切替(小/大)
+  var sizeButtons = document.querySelectorAll(".cursor-size-btn");
+  sizeButtons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      sizeButtons.forEach(function (b) {
+        b.classList.remove("active");
+      });
+      btn.classList.add("active");
+      sizeMultiplier = btn.getAttribute("data-size") === "large" ? 2 : 1;
+      updateFollowerSize();
     });
   });
 
