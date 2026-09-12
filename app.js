@@ -121,10 +121,51 @@ function loadAnnouncement() {
     });
 }
 
+function setupCursorPicker() {
+  var picks = document.querySelectorAll(".cursor-pick");
+  if (!picks.length) return;
+
+  function applyCursor(btn) {
+    picks.forEach(function (b) {
+      b.classList.remove("active");
+    });
+    btn.classList.add("active");
+    var url = btn.getAttribute("data-cursor");
+    if (!url || url === "none") {
+      document.documentElement.style.cursor = "";
+    } else {
+      var hx = btn.getAttribute("data-hx") || 0;
+      var hy = btn.getAttribute("data-hy") || 0;
+      document.documentElement.style.cursor = 'url("' + url + '") ' + hx + " " + hy + ", auto";
+    }
+  }
+
+  picks.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      applyCursor(btn);
+    });
+  });
+
+  // 初期表示: キャラクターの中からランダムに選択(見つからなければメロモンタ、それも無ければ先頭)
+  var charPicks = Array.prototype.filter.call(picks, function (b) {
+    var c = b.getAttribute("data-cursor");
+    return c && c !== "none";
+  });
+  var initial = null;
+  if (charPicks.length > 0) {
+    initial = charPicks[Math.floor(Math.random() * charPicks.length)];
+  }
+  if (!initial) {
+    initial = document.querySelector('.cursor-pick[data-cursor*="meromonta"]') || picks[0];
+  }
+  applyCursor(initial);
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   loadAnnouncement();
   loadSheet(MANSION_CSV_URL, "mansion-grid", renderMansionCard);
   loadSheet(CARDBOARD_CSV_URL, "cardboard-grid", renderCardboardCard);
+  setupCursorPicker();
 
   // スクロールプログレスバー
   var bar = document.getElementById("scrollProgressBar");
