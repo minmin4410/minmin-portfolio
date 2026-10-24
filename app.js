@@ -4,10 +4,10 @@
    スプレッドシートを編集するだけで、サイト側のコードは触らずに更新できます。
    ========================================================================== */
 
-// ここにスプレッドシートのCSVエクスポートURLを設定してください。
+// キャラ一覧はリポジトリ内の mansion.csv / cardboard.csv が原本です(GitHubの履歴がバックアップ)。
 // スプレッドシートは「共有」→「リンクを知っている全員」→「閲覧者」にしてください。
-const MANSION_CSV_URL   = "https://docs.google.com/spreadsheets/d/1KFMQ2Wv7swnI_HQjVnb-ksLniNAE3HRUCz0yhNjQj38/export?format=csv&gid=1202227494";
-const CARDBOARD_CSV_URL = "https://docs.google.com/spreadsheets/d/1dJ6bEnD_sJxv84rOCOv9qhjszs9I6tal0veM1pIZ3-0/export?format=csv&gid=1352463638";
+const MANSION_CSV_URL   = "mansion.csv";
+const CARDBOARD_CSV_URL = "cardboard.csv";
 
 function escapeHtml(s) {
   return String(s == null ? "" : s)
