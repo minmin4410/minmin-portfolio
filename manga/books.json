@@ -1,0 +1,35 @@
+[
+ {
+  "id": "kokou-no-buruma-01",
+  "title": "孤高のブルマ",
+  "episode": "第1話　路地裏の生姜焼き",
+  "author": "minmin",
+  "tagline": "うまいですね。",
+  "cover": "img/kokou-no-buruma-01-cover.jpg",
+  "spreads": [
+   {
+    "img": "img/kokou-no-buruma-01-s1.jpg",
+    "label": "見開き①　入店〜注文",
+    "w": 2016,
+    "h": 1344,
+    "gx": 1016
+   },
+   {
+    "img": "img/kokou-no-buruma-01-s2.jpg",
+    "label": "見開き②　実食〜ドクン",
+    "w": 2016,
+    "h": 1344,
+    "gx": 956
+   },
+   {
+    "img": "img/kokou-no-buruma-01-s3.jpg",
+    "label": "見開き③　うまいですね〜退店",
+    "w": 2016,
+    "h": 1344,
+    "gx": 991
+   }
+  ],
+  "cw": 1536,
+  "ch": 2048
+ }
+]

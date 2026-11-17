@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>孤高のブルマ　第1話　路地裏の生姜焼き</title>
+<base href="../">
+<meta name="description" content="電子コミック『孤高のブルマ』第1話　路地裏の生姜焼き。作 minmin × Claude。">
+<meta property="og:type" content="book">
+<meta property="og:title" content="孤高のブルマ　第1話　路地裏の生姜焼き">
+<meta property="og:description" content="電子コミック『孤高のブルマ』第1話　路地裏の生姜焼き。作 minmin × Claude。">
+<meta property="og:url" content="https://minmin4410.github.io/minmin-portfolio/manga/kokou-no-buruma-01/">
+<meta property="og:image" content="https://minmin4410.github.io/minmin-portfolio/manga/kokou-no-buruma-01/banner.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@minmin_4410">
+<meta name="twitter:title" content="孤高のブルマ　第1話　路地裏の生姜焼き">
+<meta name="twitter:description" content="電子コミック『孤高のブルマ』第1話　路地裏の生姜焼き。作 minmin × Claude。">
+<meta name="twitter:image" content="https://minmin4410.github.io/minmin-portfolio/manga/kokou-no-buruma-01/banner.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Reggae+One&family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Zen+Old+Mincho:wght@700&display=swap" rel="stylesheet">
+<style>
+/*
+VOICE: 町の古本屋の棚と、少年誌の誌面。遊び心はあるが道具として静か。
+IDEA: 本棚から一冊抜いて、右から左へ見開きでめくる日本の漫画そのもの。
+PICTURE: 本棚の背表紙と表紙、開くと白い見開きページとコマ枠。
+COLOUR and TYPE: 生成り地×墨×深紅。見出しはDela Gothic One、セリフはZen Kaku Gothic、擬音はReggae One。
+LAYOUT: 上に細い帯、本棚グリッド。読む画面は黒い台の上に見開きを最大表示。
+*/
+:root{color-scheme:light dark;--bg:light-dark(#f3ece0,#16120f);--ink:light-dark(#1b1613,#efe7da);--sub:light-dark(#6b5f55,#b3a698);--line:light-dark(#d8ccb9,#3a322b);--card:light-dark(#fffaf1,#211b17);--red:#a3122a;--red2:light-dark(#a3122a,#e0485e)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "Zen Kaku Gothic New",system-ui,sans-serif;overflow-x:clip}
+button,select,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;min-height:44px;border-radius:10px;border:1.5px solid var(--ink);background:transparent;padding:0 16px;font-weight:700}
+button.pri{background:var(--red);border-color:var(--red);color:#fff}
+button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--red2);outline-offset:2px}
+.bar{display:flex;align-items:center;gap:12px;padding:10px max(4vw,14px);border-bottom:1px solid var(--line);flex-wrap:wrap}
+.logo{font-family:"Dela Gothic One";font-size:22px;letter-spacing:.04em;text-decoration:none;color:var(--ink)}
+.logo b{color:var(--red2);font-weight:400}
+.bar nav{margin-inline-start:auto;display:flex;gap:8px;flex-wrap:wrap}
+.bar nav a{padding:8px 14px;border-radius:999px;text-decoration:none;color:var(--ink);font-weight:700;font-size:15px}
+.bar nav a[aria-current]{background:var(--ink);color:var(--bg)}
+.band{padding:clamp(22px,4vw,48px) max(4vw,14px);max-width:1240px;margin:auto}
+h1{font-family:"Dela Gothic One";font-weight:400;font-size:clamp(28px,4.5vw,44px);line-height:1.1;margin:0 0 6px;text-wrap:balance}
+h2{font-size:20px;margin:28px 0 12px}
+.lead{color:var(--sub);margin:0 0 22px;max-width:62ch}
+/* 本棚 */
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));align-items:end;gap:26px 20px;padding:26px 18px 0;background:linear-gradient(transparent calc(100% - 14px),light-dark(#8a6a4a,#4a382a) 0) ;background-size:100% 300px}
+.book{display:block;text-align:start;border:0;padding:0;background:none;min-height:0;border-radius:0}
+.cv{aspect-ratio:2/3;border-radius:3px 6px 6px 3px;box-shadow:0 10px 22px -10px #0009,inset 6px 0 0 #0002;overflow:hidden;transition:transform .25s}
+.book:hover .cv{transform:translateY(-6px) rotate(-1deg)}
+.book p{margin:10px 0 0;font-weight:700;font-size:15px;line-height:1.35}
+.book small{color:var(--sub);font-size:13px}
+.tag{display:inline-block;font-size:12px;padding:1px 8px;border-radius:999px;background:var(--red);color:#fff;margin-inline-start:6px;vertical-align:2px}
+/* 自動表紙 */
+.acv{position:relative;width:100%;height:100%;background:var(--red);color:#fff;display:flex;flex-direction:row-reverse;padding:8% 7%;gap:6%;container-type:inline-size}
+.acv .t{writing-mode:vertical-rl;font-family:"Dela Gothic One";font-size:26cqw;line-height:1;letter-spacing:.02em;text-shadow:3px 3px 0 #000}
+.acv .e{writing-mode:vertical-rl;font-size:7cqw;font-weight:900;background:#fff;color:#111;padding:4% 2%;align-self:flex-start}
+.acv .a{position:absolute;left:7%;bottom:6%;font-size:7cqw;font-weight:900}
+.acv .s{position:absolute;left:7%;top:8%;font-family:"Reggae One";font-size:9cqw;writing-mode:vertical-rl;color:#ffe9c9}
+.acv img,.cv>img{width:100%;height:100%;object-fit:contain;display:block}
+/* リーダー */
+.reader{position:fixed;inset:0;background:#0d0b0a;color:#eee;display:flex;flex-direction:column;z-index:5}
+.rtop{display:flex;align-items:center;gap:10px;padding:8px 12px;flex-wrap:wrap}
+.rtop button{border-color:#555;color:#eee;min-height:40px}
+.rtop .ti{font-weight:700;font-size:15px;flex:1}
+.rtop .ti small{color:#aaa;font-weight:500;margin-inline-start:8px}
+.stage{flex:1;position:relative;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none}
+.slide{position:absolute;inset:4px;display:grid;place-items:center;will-change:transform}
+.frm{position:relative;overflow:hidden;background:#fff;box-shadow:0 20px 50px #000a}
+.frm>img{display:block;max-width:none;pointer-events:none}
+.frm>.pg,.frm>.dbl{width:100%;height:100%}
+.dbl{display:flex;flex-direction:row-reverse}
+.pg{flex:1;height:100%;background:#fff;color:#111;position:relative;container-type:inline-size;overflow:hidden}
+.pg.half{background-size:200% 100%;background-repeat:no-repeat}
+.dbl .pg+.pg{border-inline-end:1px solid #ddd}
+.nm{position:absolute;inset:5.5% 6% 6.5%;display:grid;grid-template:repeat(12,1fr)/repeat(6,1fr);gap:2.2cqw 1.6cqw;direction:rtl}
+.pn{border:.55cqw solid #111;position:relative;direction:ltr;overflow:hidden;background:#fff}
+.pn.big{border-width:.8cqw}
+.pn .d{position:absolute;left:2%;bottom:2%;right:40%;font-size:2.3cqw;line-height:1.35;color:#8a8580}
+.bubs{position:absolute;inset:4% 4% auto auto;display:flex;flex-direction:row-reverse;flex-wrap:wrap;gap:2cqw;align-items:flex-start;max-width:92%;max-height:80%}
+.b{writing-mode:vertical-rl;font-weight:700;font-size:3.1cqw;line-height:1.3;background:#fff;border:.4cqw solid #111;border-radius:50%;padding:3.2cqw 2.2cqw;max-height:30cqw}
+.b.nar{border-radius:0;font-family:"Zen Old Mincho";font-weight:700;background:#fff}
+.b.whis{border-style:dashed;font-size:2.6cqw;font-weight:500}
+.b.big{font-size:5.2cqw;font-weight:900;padding:4cqw 3cqw;max-height:none}
+.sfx{position:absolute;left:6%;top:40%;font-family:"Reggae One";font-size:10cqw;line-height:1;color:#111;-webkit-text-stroke:.5cqw #fff;paint-order:stroke fill;transform:rotate(-8deg);writing-mode:vertical-rl}
+.big .sfx{font-size:15cqw;left:8%;top:18%}
+.mark{position:absolute;left:0;top:0;font-size:2.2cqw;padding:.3cqw 1.2cqw;background:#111;color:#fff;font-weight:700}
+.mark.h{background:var(--red)}
+.ttl{position:absolute;left:5%;top:6%;writing-mode:vertical-rl;font-family:"Dela Gothic One";font-size:9cqw;line-height:1;color:var(--red);-webkit-text-stroke:.4cqw #fff;paint-order:stroke fill}
+.end{position:absolute;left:4%;bottom:6%;font-family:"Dela Gothic One";font-size:6cqw;color:#111}
+.nno{position:absolute;bottom:1.5%;font-size:2.4cqw;color:#999}
+.pg:nth-child(odd) .nno{right:4%}.pg:nth-child(even) .nno{left:4%}
+.rbot{display:flex;align-items:center;gap:12px;padding:8px 14px 4px}
+.nb{border-color:#555;color:#eee;min-height:40px;padding:0 12px;font-size:14px}
+.prog{flex:1;height:4px;background:#333;border-radius:4px;overflow:hidden}
+.prog{direction:rtl}.prog i{display:block;height:100%;background:var(--red2);transition:width .25s}
+.hint{font-size:12px;color:#888;text-align:center;padding-bottom:6px}
+/* フォーム */
+.form{display:grid;gap:14px;max-width:760px}
+label{font-weight:700;font-size:15px;display:grid;gap:6px}
+input,textarea,select{border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:10px 12px;font-size:16px}
+textarea{min-height:140px;resize:vertical}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.rule{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:15px}
+.rule ul{margin:6px 0 0;padding-inline-start:1.2em}
+.prm{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px}
+.prm pre{white-space:pre-wrap;font-size:14px;margin:8px 0;font-family:inherit}
+.mini{display:flex;flex-direction:row-reverse;aspect-ratio:1.414;max-width:640px;border:1px solid var(--line);margin-top:10px}
+.err{color:var(--red2);font-weight:700}
+canvas{display:none;max-width:100%;height:auto;border-radius:8px;box-shadow:0 8px 24px -10px #0008;display:block}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}
+@media(max-width:800px){.cols{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.shelf{grid-template-columns:repeat(2,minmax(0,1fr))}.bar nav a{padding:8px 10px}}
+@media(prefers-reduced-motion:reduce){.cv{transition:none}}
+</style>
+</head>
+<body>
+<header class="bar">
+ <a class="logo" href="#shelf">minminの漫画<b>工房</b></a>
+ 
+</header>
+<main id="main"></main>
+<div id="rd"></div>
+<script>if(!location.hash)history.replaceState(null,'','kokou-no-buruma-01/#kokou-no-buruma-01');</script>
+<script>
+{
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let BOOKS=[],DRAFTS=[];
+try{DRAFTS=JSON.parse(localStorage.getItem('mk-drafts')||'[]')}catch(e){}
+const saveDrafts=()=>{try{localStorage.setItem('mk-drafts',JSON.stringify(DRAFTS))}catch(e){}};
+const all=()=>[...BOOKS,...DRAFTS];
+
+const autoCover=b=>`<div class="acv"><div class="t">${esc(b.title)}</div><div class="e">${esc(b.episode||'')}</div><div class="s">${esc(b.tagline||'')}</div><div class="a">${esc(b.author||'')}</div></div>`;
+const coverHTML=b=>b.cover?`<img src="${esc(b.cover)}" alt="${esc(b.title)} 表紙">`:autoCover(b);
+
+/* ---- 本棚 ---- */
+function shelf(){
+ const card=(b,d)=>`<button class="book" data-open="${esc(b.id)}"><div class="cv" style="aspect-ratio:${b.cw||2}/${b.ch||3}">${coverHTML(b)}</div><p>${esc(b.title)}${b.status?`<span class="tag">${esc(b.status)}</span>`:''}</p><small>${esc(b.episode||'')}${d?'・この端末の下書き':''}</small></button>`;
+ $('#main').innerHTML=`<section class="band"><h1>本棚</h1><p class="lead">minminがClaudeと作る電子コミック。表紙をタップすると、右から左へ見開きで読めます。</p>
+ <div class="shelf">${BOOKS.map(b=>card(b)).join('')}${DRAFTS.map(b=>card(b,1)).join('')}</div></section>`;
+}
+
+/* ---- ページ描画 ---- */
+function pageHTML(sp,pi,b){
+ const p=sp.pages[pi];
+ if(sp.img){
+  const pos=pi===0?'100% 0':'0 0';
+  return `<div class="pg half" style="background-image:url('${esc(sp.img)}');background-position:${pos}"></div>`;
+ }
+ const pans=p.panels.map(x=>{
+  const lines=(x.lines||[]).map(l=>`<div class="b ${esc(l.k||'say')}">${esc(l.t)}</div>`).join('');
+  return `<div class="pn${x.big?' big':''}" style="grid-area:${esc(x.a)}">
+   ${x.hook?'<span class="mark h">ヒキ</span>':x.big?'<span class="mark">見せ場</span>':''}
+   ${x.title?`<div class="ttl">${esc(b.title)}</div>`:''}
+   ${x.sfx?`<div class="sfx">${esc(x.sfx)}</div>`:''}
+   <div class="bubs">${lines}</div>
+   <div class="d">${esc(x.desc)}</div>
+   ${x.end?'<div class="end">完</div>':''}</div>`}).join('');
+ return `<div class="pg"><div class="nm">${pans}</div><span class="nno">${p.n}</span></div>`;
+}
+function coverPage(b){return `<div class="pg" style="padding:0">${coverHTML(b)}</div>`}
+
+/* ---- リーダー ---- */
+let R=null;
+function openBook(id){
+ const b=all().find(x=>x.id===id); if(!b)return;
+ R={b,i:0};
+ if(location.hash!=='#'+id)history.replaceState(null,'','#'+id);
+ drawReader();
+}
+function items(){
+ const b=R.b,one=innerWidth<720||innerHeight>innerWidth*1.1;
+ const list=[{k:'cover'}];
+ b.spreads.forEach((s,si)=>{ if(one){list.push({k:'p',si,pi:0},{k:'p',si,pi:1})} else list.push({k:'s',si}) });
+ return {list,one};
+}
+// 1枚分の中身と、その「本来の縦横比」を返す。比率は絶対に変えない
+function frameOf(it){
+ const b=R.b;
+ if(it.k==='cover')return b.cover?{aw:b.cw||2,ah:b.ch||3,img:b.cover,x0:0,x1:b.cw||2,iw:b.cw||2}:{aw:2,ah:3,html:coverPage(b)};
+ const sp=b.spreads[it.si];
+ if(it.k==='s')return sp.img?{aw:sp.w,ah:sp.h,img:sp.img,x0:0,x1:sp.w,iw:sp.w}:{aw:1.414,ah:1,html:`<div class="dbl">${pageHTML(sp,0,b)}${pageHTML(sp,1,b)}</div>`};
+ if(sp.img){const g=sp.gx||sp.w/2;const[x0,x1]=it.pi===0?[g,sp.w]:[0,g];return{aw:x1-x0,ah:sp.h,img:sp.img,x0,x1,iw:sp.w}}
+ return{aw:.707,ah:1,html:pageHTML(sp,it.pi,b)};
+}
+function frameHTML(f){
+ if(f.img)return `<div class="frm" data-aw="${f.aw}" data-ah="${f.ah}" data-x0="${f.x0}" data-iw="${f.iw}"><img src="${esc(f.img)}" alt="" draggable="false"></div>`;
+ return `<div class="frm" data-aw="${f.aw}" data-ah="${f.ah}">${f.html}</div>`;
+}
+function layout(){
+ const s=$('#stg');if(!s)return;const SW=s.clientWidth-8,SH=s.clientHeight-8;
+ s.querySelectorAll('.frm').forEach(f=>{
+  const aw=+f.dataset.aw,ah=+f.dataset.ah;let h=SH,w=h*aw/ah;if(w>SW){w=SW;h=w*ah/aw}
+  f.style.width=w+'px';f.style.height=h+'px';
+  const im=f.querySelector('img');
+  if(im){const k=h/ah;im.style.height=h+'px';im.style.width=(+f.dataset.iw*k)+'px';im.style.marginLeft=(-f.dataset.x0*k)+'px'}
+ });
+}
+function labelOf(it){const b=R.b;return it.k==='cover'?'表紙':it.k==='s'?b.spreads[it.si].label:`${b.spreads[it.si].label}（${it.pi?'左':'右'}ページ）`}
+function drawReader(dir){
+ if(!R){$('#rd').innerHTML='';return}
+ const {list}=items(); R.i=Math.max(0,Math.min(R.i,list.length-1));
+ const it=list[R.i],b=R.b;
+ if(!$('.reader')){
+  $('#rd').innerHTML=`<div class="reader" role="dialog" aria-label="${esc(b.title)}">
+  <div class="rtop"><button id="cl">← 本棚</button><div class="ti">${esc(b.title)}<small>${esc(b.episode||'')}</small></div></div>
+  <div class="stage" id="stg"><div class="slide" id="sl"></div></div>
+  <div class="rbot"><button class="nb" id="nx" aria-label="次へ">‹ 次へ</button><div class="prog"><i id="pg"></i></div><button class="nb" id="pv" aria-label="前へ">前へ ›</button></div>
+  <div class="hint" id="lb"></div></div>`;
+  $('#cl').onclick=closeReader;
+  $('#nx').onclick=()=>go(1);$('#pv').onclick=()=>go(-1);
+  bindSwipe($('#stg'));
+ }
+ $('#sl').innerHTML=frameHTML(frameOf(it));
+ layout();
+ const sl=$('#sl');
+ if(dir&&!matchMedia('(prefers-reduced-motion:reduce)').matches){
+  sl.style.transition='none';sl.style.transform=`translateX(${dir>0?'-':''}40%)`;sl.style.opacity='0';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{sl.style.transition='transform .28s ease,opacity .28s';sl.style.transform='none';sl.style.opacity='1'}));
+ }else{sl.style.transition='none';sl.style.transform='none';sl.style.opacity='1'}
+ $('#pg').style.width=(R.i+1)/list.length*100+'%';
+ $('#lb').textContent=`${labelOf(it)}　${R.i+1}/${list.length}　右へスワイプで次へ`;
+ // 次の画像を先読み
+ const nx=list[R.i+1];if(nx){const f=frameOf(nx);if(f.img){const p=new Image();p.src=f.img}}
+}
+function bindSwipe(s){
+ let x0=null,y0=0,dx=0,t0=0,drag=false;
+ s.addEventListener('pointerdown',e=>{x0=e.clientX;y0=e.clientY;dx=0;t0=Date.now();drag=false;s.setPointerCapture(e.pointerId)});
+ s.addEventListener('pointermove',e=>{if(x0==null)return;dx=e.clientX-x0;if(Math.abs(dx)>8)drag=true;if(drag){const sl=$('#sl');sl.style.transition='none';sl.style.transform=`translateX(${dx}px)`;sl.style.opacity=String(1-Math.min(.5,Math.abs(dx)/600))}});
+ const end=e=>{if(x0==null)return;const dt=Date.now()-t0,W=s.clientWidth;const sx=x0;x0=null;
+  if(drag&&(Math.abs(dx)>W*.18||(Math.abs(dx)>30&&dt<300))){const d=dx>0?1:-1;if(!go(d))snap()}
+  else if(!drag){ // タップ：左側で次、右側で前
+   const r=s.getBoundingClientRect(),p=(sx-r.left)/r.width;if(p<.35)go(1);else if(p>.65)go(-1)}
+  else snap()};
+ s.addEventListener('pointerup',end);s.addEventListener('pointercancel',()=>{x0=null;snap()});
+}
+function snap(){const sl=$('#sl');if(!sl)return;sl.style.transition='transform .2s,opacity .2s';sl.style.transform='none';sl.style.opacity='1'}
+function go(d){if(!R)return false;const n=items().list.length;const j=R.i+d;if(j<0||j>=n)return false;R.i=j;drawReader(d);return true}
+function closeReader(){R=null;$('#rd').innerHTML='';history.replaceState(null,'','#shelf');route()}
+addEventListener('keydown',e=>{if(!R)return;if(e.key==='ArrowLeft')go(1);if(e.key==='ArrowRight')go(-1);if(e.key==='Escape')closeReader()});
+let lastOne=null;
+addEventListener('resize',()=>{if(!R)return;const one=items().one;if(one!==lastOne){lastOne=one;$('#rd').innerHTML='';R.i=0;drawReader()}else layout()});
+
+/* ---- ネームを作る ---- */
+const RULES=`あなたは日本の少年誌・青年誌の漫画編集者兼ネーム作家です。以下のルールで、あらすじから見開き単位のネームを作ります。
+【読み順】日本の漫画は右から左。見開きは右ページ→左ページ。各ページ内は右上→左へ、次の段へ下がって右→左。
+【コマ座標】各ページは12行×6列のグリッド。列1が一番右、列6が一番左（右から数える）。コマはCSSのgrid-area形式 "行開始/列開始/行終了/列終了"（終了は+1した線番号。例: 上半分全幅 "1/1/7/7"）。コマ同士を重ねない。1ページ3〜6コマ。
+【演出】見せ場は大ゴマ(big:true)。最大の見せ場は「ページをめくった直後」の右ページ上部に置く。各見開きの左ページ左下（最終行・列4〜6側の最後のコマ）には次が気になる「ヒキ」(hook:true)を置く。定番ギャグは毎回同じ型で繰り返す。擬音(sfx)は短いカタカナ。
+【セリフ】lines の k は say(台詞) / whis(ひそひそ・心の声) / nar(ナレーション) / big(決め台詞)。1つ15字程度まで。
+【画像プロンプト】各見開きに、画像生成AI用の日本語プロンプト(prompt)を書く。「日本の漫画の見開き2ページ、モノクロ、Gペンとスクリーントーン、右から左へ読むコマ割り、白い空の吹き出し」を含め、右ページと左ページのコマ内容を順に具体的に描写する。キャラの外見は毎回明記する。
+出力はJSONのみ: {"title":"","episode":"","tagline":"","spreads":[{"label":"","prompt":"","pages":[{"n":1,"panels":[{"a":"1/1/7/7","big":true,"hook":false,"title":false,"end":false,"desc":"絵の説明","sfx":"","lines":[{"t":"","k":"say"}]}]},{"n":2,"panels":[...]}]}]}  最初の見開きの最初のコマに title:true、最後のコマに end:true。`;
+let SAMPLE=null;
+function newView(){
+ $('#main').innerHTML=`<section class="band"><h1>ネームを作る</h1><p class="lead">あらすじを書くと、Claudeが日本の漫画の作法でコマ割り・セリフ・見開きごとの画像プロンプトまで組み立てます。できたネームはこの端末の本棚に下書きとして入ります。</p>
+ <div class="cols"><form class="form" id="nf">
+  <label>タイトル<input id="f-t" required placeholder="例：孤高のブルマ"></label>
+  <label>話数・サブタイトル<input id="f-e" placeholder="例：第2話　深夜のラーメン"></label>
+  <label>登場人物（見た目・口調）<textarea id="f-c" style="min-height:90px" placeholder="例：紺キャップ、丸メガネ、あごひげ、ベージュのコートに紺ブルマと白靴下。丁寧語で独り言が多い"></textarea></label>
+  <label>あらすじ<textarea id="f-s" required placeholder="起承転結をざっくり。見せたい場面や定番ネタも書く"></textarea></label>
+  <div class="row"><label style="display:flex;align-items:center;gap:8px">見開き数<select id="f-n"><option>2</option><option selected>3</option><option>4</option></select></label>
+  <button class="pri" id="gen">ネームを作る</button></div>
+  <p id="st" aria-live="polite"></p></form>
+  <div class="rule"><b>このツールが守る作法</b><ul>
+   <li>右上→左→下の段へ、右から左に読む</li><li>見せ場は大ゴマ。最大の見せ場はページをめくった直後の右ページ</li>
+   <li>見開きの左下には次をめくりたくなる「ヒキ」</li><li>定番ギャグは毎回同じ型で繰り返す</li>
+   <li>絵の中の吹き出しは空にして、文字は後から縦書きで正確に入れる</li></ul>
+   <p style="margin:12px 0 0;color:var(--sub);font-size:14px">キャラや背景、ロゴの画像はチャットに添付してください。生成した見開き画像を添付すると、セリフを入れて本棚に並べます。</p></div></div>
+ <div id="out"></div></section>`;
+ $('#nf').onsubmit=async e=>{e.preventDefault();
+  const st=$('#st');if(!SAMPLE){st.innerHTML='<span class="err">この表示ではClaudeを呼び出せません。claude.aiでこのページを開いてください。</span>';return}
+  const n=$('#f-n').value;
+  const input=`${RULES}\n\n# 依頼\nタイトル: ${$('#f-t').value}\n話数: ${$('#f-e').value}\n見開き数: ${n}（${n*2}ページ）\n登場人物: ${$('#f-c').value}\nあらすじ:\n${$('#f-s').value}`;
+  $('#gen').disabled=true;st.textContent='ネームを組んでいます…（1分ほどかかります）';
+  try{
+   const v=await SAMPLE.json(input,{modelTier:'complex'});
+   const b={id:'d'+Date.now(),author:'minmin',status:'下書き',cover:null,...v,title:v.title||$('#f-t').value};
+   b.spreads=(b.spreads||[]).map(s=>({img:null,...s}));
+   DRAFTS.unshift(b);saveDrafts();st.textContent='できました。本棚にも入りました。';showDraft(b);
+  }catch(err){st.innerHTML=`<span class="err">${err.code==='rate_limited'?'混み合っています。少し待ってからもう一度押してください。':err.code==='not_granted'?'Claudeの呼び出しが許可されませんでした。':'うまく作れませんでした。もう一度お試しください。'}</span>`}
+  $('#gen').disabled=false};
+}
+function showDraft(b){
+ $('#out').innerHTML=`<h2>${esc(b.title)}　${esc(b.episode||'')}</h2><button data-open="${esc(b.id)}" class="pri">読んでみる</button>
+ ${b.spreads.map((s,i)=>`<div class="prm"><b>${esc(s.label||'見開き'+(i+1))}</b><div class="mini">${pageHTML(s,0,b)}${pageHTML(s,1,b)}</div>
+  <pre id="p${i}">${esc(s.prompt||'')}</pre><button data-copy="p${i}">プロンプトをコピー</button></div>`).join('')}`;
+}
+
+/* ---- Xバナー ---- */
+let DL=null;
+function bannerView(){
+ const opts=all().map(b=>`<option value="${esc(b.id)}">${esc(b.title)}　${esc(b.episode||'')}</option>`).join('');
+ $('#main').innerHTML=`<section class="band"><h1>Xバナー</h1><p class="lead">投稿用の横長バナー（1200×675）を表紙とタイトルから作ります。Xに投稿するときはこの画像を添付し、本文に作品のリンクを貼ってください。</p>
+ <div class="row" style="margin-bottom:14px"><select id="bsel" aria-label="作品">${opts}</select>
+ <button id="bsave" class="pri" hidden>画像を保存</button></div>
+ <canvas id="cv" width="1200" height="675"></canvas><img id="bimg" alt="バナー画像" style="max-width:100%;border-radius:8px;box-shadow:0 8px 24px -10px #0008"><p id="bst" style="color:var(--sub);font-size:14px">スマホは画像を長押しでも保存できます。</p></section>`;
+ $('#bsel').onchange=drawBanner;drawBanner();
+ if(DL)$('#bsave').hidden=false;
+ $('#bsave').onclick=()=>{$('#cv').toBlob(async bl=>{try{await DL.save({filename:'banner.png',data:bl})}catch(e){$('#bst').textContent='保存がキャンセルされました。画像の長押しでも保存できます。'}},'image/png')};
+}
+async function drawBanner(){
+ const b=all().find(x=>x.id===$('#bsel')?.value)||all()[0];if(!b)return;
+ const c=$('#cv'),g=c.getContext('2d'),W=1200,H=675;
+ try{await Promise.all(['72px "Dela Gothic One"','40px "Reggae One"','700 30px "Zen Kaku Gothic New"'].map(f=>document.fonts.load(f,b.title+b.episode)))}catch(e){}
+ g.fillStyle='#f3ece0';g.fillRect(0,0,W,H);
+ // 集中線
+ g.save();g.translate(330,337);g.strokeStyle='#a3122a22';for(let i=0;i<90;i++){g.rotate(Math.PI*2/90);g.lineWidth=2+(i%3)*2;g.beginPath();g.moveTo(180,0);g.lineTo(900,0);g.stroke()}g.restore();
+ g.fillStyle='#a3122a';g.fillRect(0,0,W,22);g.fillRect(0,H-22,W,22);
+ // 表紙
+ const ch=555,cw=b.cover&&b.cw?Math.round(ch*b.cw/b.ch):370,cx=80,cy=60;
+ g.fillStyle='#0004';g.fillRect(cx+12,cy+14,cw,ch);
+ if(b.cover){await new Promise(r=>{const im=new Image();im.onload=()=>{const s=Math.min(cw/im.width,ch/im.height),w=im.width*s,h=im.height*s;g.save();g.beginPath();g.rect(cx,cy,cw,ch);g.clip();g.drawImage(im,cx+(cw-w)/2,cy+(ch-h)/2,w,h);g.restore();r()};im.onerror=r;im.src=b.cover})}
+ else{g.fillStyle='#a3122a';g.fillRect(cx,cy,cw,ch);g.fillStyle='#fff';const tc=[...b.title],tz=Math.min(92,Math.floor((ch-130)/tc.length));g.font=tz+'px "Dela Gothic One"';g.textAlign='center';tc.forEach((ch2,i)=>g.fillText(ch2,cx+cw-80,cy+40+tz+i*tz*1.04));g.font='700 28px "Zen Kaku Gothic New"';g.textAlign='left';g.fillText(b.author||'',cx+24,cy+ch-28)}
+ g.strokeStyle='#1b1613';g.lineWidth=5;g.strokeRect(cx,cy,cw,ch);
+ // 文字
+ g.textAlign='left';g.fillStyle='#1b1613';
+ const TX=cx+cw+56,TW=W-TX-50;let fs=Math.min(130,Math.floor(TW/[...b.title].length));g.font=`${fs}px "Dela Gothic One"`;g.fillText(b.title,TX,250);
+ g.font='700 38px "Zen Kaku Gothic New"';g.fillText(b.episode||'',TX+4,320);
+ if(b.tagline){g.save();g.translate(TX+10,450);g.rotate(-.05);g.font=Math.min(64,Math.floor(TW/((b.tagline.length+2)*1.05)))+'px "Reggae One"';g.lineWidth=12;g.strokeStyle='#fff';g.strokeText('「'+b.tagline+'」',0,0);g.fillStyle='#a3122a';g.fillText('「'+b.tagline+'」',0,0);g.restore()}
+ g.fillStyle='#1b1613';g.fillRect(TX,540,TW,64);g.fillStyle='#fff';g.font='700 28px "Zen Kaku Gothic New"';g.fillText(`電子コミック　｜　作 ${b.author||''} × Claude`,TX+22,583);
+ try{$('#bimg').src=c.toDataURL('image/png')}catch(e){}
+}
+
+/* ---- ルーティング ---- */
+function route(){
+ const h=location.hash.slice(1)||'shelf';
+ document.querySelectorAll('nav a').forEach(a=>a.toggleAttribute('aria-current',a.dataset.v===h));
+ {shelf();if(all().some(b=>b.id===h))openBook(h)}
+}
+addEventListener('hashchange',()=>{if(R&&location.hash.slice(1)===R.b.id)return;R=null;drawReader();route()});
+document.addEventListener('click',e=>{
+ const o=e.target.closest('[data-open]');if(o){openBook(o.dataset.open);return}
+ const c=e.target.closest('[data-copy]');if(c){navigator.clipboard.writeText($('#'+c.dataset.copy).textContent).then(()=>{c.textContent='コピーしました'},()=>{c.textContent='長押しで選択してコピーしてください'})}
+});
+fetch('books.json').then(r=>r.json()).then(d=>{BOOKS=d;route()}).catch(()=>{$('#main').innerHTML='<p class="band err">本棚を読み込めませんでした。</p>'});
+}
+</script>
+</body>
+</html>
