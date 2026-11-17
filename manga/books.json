@@ -31,5 +31,71 @@
   ],
   "cw": 1536,
   "ch": 2048
+ },
+ {
+  "id": "kokou-no-buruma-02",
+  "title": "孤高のブルマ",
+  "episode": "第2話　深夜のラーメン屋",
+  "author": "minmin",
+  "tagline": "うっま〜い♪",
+  "cover": "img/kokou-no-buruma-02-ep2-cover.jpg",
+  "spreads": [
+   {
+    "img": "img/kokou-no-buruma-02-ep2-s1.jpg",
+    "label": "見開き①　入店〜着丼",
+    "w": 2016,
+    "h": 1344,
+    "gx": 992
+   },
+   {
+    "img": "img/kokou-no-buruma-02-ep2-s2.jpg",
+    "label": "見開き②　実食〜ドクン",
+    "w": 2016,
+    "h": 1344,
+    "gx": 989
+   },
+   {
+    "img": "img/kokou-no-buruma-02-ep2-s3.jpg",
+    "label": "見開き③　うまいですね〜考え込む",
+    "w": 2016,
+    "h": 1344,
+    "gx": 1001
+   }
+  ],
+  "cw": 1536,
+  "ch": 2048
+ },
+ {
+  "id": "kokou-no-buruma-03",
+  "title": "孤高のブルマ",
+  "episode": "第3話　白いTシャツ",
+  "author": "minmin",
+  "tagline": "これでよし。",
+  "cover": "img/kokou-no-buruma-03-ep3-cover.jpg",
+  "spreads": [
+   {
+    "img": "img/kokou-no-buruma-03-ep3-s1.jpg",
+    "label": "見開き①　来店〜服探し",
+    "w": 2017,
+    "h": 1344,
+    "gx": 1008
+   },
+   {
+    "img": "img/kokou-no-buruma-03-ep3-s2.jpg",
+    "label": "見開き②　白T〜試着〜会計",
+    "w": 2016,
+    "h": 1344,
+    "gx": 1024
+   },
+   {
+    "img": "img/kokou-no-buruma-03-ep3-s3.jpg",
+    "label": "見開き③　マジック〜これでよし",
+    "w": 2016,
+    "h": 1344,
+    "gx": 1014
+   }
+  ],
+  "cw": 1536,
+  "ch": 2048
  }
 ]
