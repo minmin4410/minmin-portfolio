@@ -99,6 +99,17 @@ h2{font-size:20px;margin:28px 0 12px}
 .nb{border-color:#555;color:#eee;min-height:40px;padding:0 12px;font-size:14px}
 .prog{flex:1;height:4px;background:#333;border-radius:4px;overflow:hidden}
 .prog{direction:rtl}.prog i{display:block;height:100%;background:var(--red2);transition:width .25s}
+.endc{display:grid;place-items:center;text-align:center}
+.endin{width:80%;display:flex;flex-direction:column;align-items:center}
+.endk{margin:0;font-size:4cqw;font-weight:700;color:#555}
+.endt{margin:1cqw 0 5cqw;font-family:"Dela Gothic One";font-size:16cqw;line-height:1;color:#111}
+.nx{display:flex;flex-direction:column;align-items:center;width:100%}
+.nxc{width:42%;box-shadow:0 2cqw 4cqw -1cqw #0007;border-radius:1cqw;overflow:hidden}
+.nxc{position:relative}.nxc img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.nxl{margin:4cqw 0 0;font-size:3.6cqw;color:#a3122a;font-weight:700}
+.nxe{margin:.5cqw 0 3cqw;font-size:4.6cqw;font-weight:900;color:#111}
+.nxb{background:#a3122a;border-color:#a3122a;color:#fff;font-size:max(15px,4cqw);padding:0 6cqw;min-height:44px}
+.shb{margin-top:3cqw;border-color:#999;color:#333;font-size:max(14px,3.4cqw);min-height:44px}
 .hint{font-size:12px;color:#888;text-align:center;padding-bottom:6px}
 /* フォーム */
 .form{display:grid;gap:14px;max-width:760px}
@@ -170,7 +181,7 @@ function coverPage(b){return `<div class="pg" style="padding:0">${coverHTML(b)}<
 let R=null;
 function openBook(id){
  const b=all().find(x=>x.id===id); if(!b)return;
- R={b,i:0};
+ R={b,i:0};$('#rd').innerHTML='';
  if(location.hash!=='#'+id)history.replaceState(null,'','#'+id);
  drawReader();
 }
@@ -178,16 +189,29 @@ function items(){
  const b=R.b,one=innerWidth<720||innerHeight>innerWidth*1.1;
  const list=[{k:'cover'}];
  b.spreads.forEach((s,si)=>{ if(one){list.push({k:'p',si,pi:0},{k:'p',si,pi:1})} else list.push({k:'s',si}) });
+ list.push({k:'end'});
  return {list,one};
 }
 // 1枚分の中身と、その「本来の縦横比」を返す。比率は絶対に変えない
 function frameOf(it){
  const b=R.b;
+ if(it.k==='end')return{aw:.707,ah:1,html:endHTML()};
  if(it.k==='cover')return b.cover?{aw:b.cw||2,ah:b.ch||3,img:b.cover,x0:0,x1:b.cw||2,iw:b.cw||2}:{aw:2,ah:3,html:coverPage(b)};
  const sp=b.spreads[it.si];
  if(it.k==='s')return sp.img?{aw:sp.w,ah:sp.h,img:sp.img,x0:0,x1:sp.w,iw:sp.w}:{aw:1.414,ah:1,html:`<div class="dbl">${pageHTML(sp,0,b)}${pageHTML(sp,1,b)}</div>`};
  if(sp.img){const g=sp.gx||sp.w/2;const[x0,x1]=it.pi===0?[g,sp.w]:[0,g];return{aw:x1-x0,ah:sp.h,img:sp.img,x0,x1,iw:sp.w}}
  return{aw:.707,ah:1,html:pageHTML(sp,it.pi,b)};
+}
+function nextOf(b){const key=x=>x.series||x.title;const list=all().filter(x=>key(x)===key(b));const i=list.findIndex(x=>x.id===b.id);return i>=0?list[i+1]:null}
+function endHTML(){
+ const b=R.b,n=nextOf(b);
+ return `<div class="pg endc"><div class="endin">
+  <p class="endk">${esc(b.episode||b.title)}</p><p class="endt">完</p>
+  ${n?`<div class="nx"><div class="nxc" style="aspect-ratio:${n.cw||2}/${n.ch||3}">${coverHTML(n)}</div>
+   <p class="nxl">次の話</p><p class="nxe">${esc(n.episode||n.title)}</p>
+   <button class="nxb" data-open="${esc(n.id)}">次の話を読む ‹</button></div>`
+  :`<p class="nxl" style="margin-top:8cqw">次の話は準備中です</p>`}
+  <button class="shb" data-close="1">本棚に戻る</button></div></div>`;
 }
 function frameHTML(f){
  if(f.img)return `<div class="frm" data-aw="${f.aw}" data-ah="${f.ah}" data-x0="${f.x0}" data-iw="${f.iw}"><img src="${esc(f.img)}" alt="" draggable="false"></div>`;
@@ -198,11 +222,11 @@ function layout(){
  s.querySelectorAll('.frm').forEach(f=>{
   const aw=+f.dataset.aw,ah=+f.dataset.ah;let h=SH,w=h*aw/ah;if(w>SW){w=SW;h=w*ah/aw}
   f.style.width=w+'px';f.style.height=h+'px';
-  const im=f.querySelector('img');
+  const im=f.querySelector(':scope>img');
   if(im){const k=h/ah;im.style.height=h+'px';im.style.width=(+f.dataset.iw*k)+'px';im.style.marginLeft=(-f.dataset.x0*k)+'px'}
  });
 }
-function labelOf(it){const b=R.b;return it.k==='cover'?'表紙':it.k==='s'?b.spreads[it.si].label:`${b.spreads[it.si].label}（${it.pi?'左':'右'}ページ）`}
+function labelOf(it){const b=R.b;return it.k==='end'?'おわり':it.k==='cover'?'表紙':it.k==='s'?b.spreads[it.si].label:`${b.spreads[it.si].label}（${it.pi?'左':'右'}ページ）`}
 function drawReader(dir){
  if(!R){$('#rd').innerHTML='';return}
  const {list}=items(); R.i=Math.max(0,Math.min(R.i,list.length-1));
@@ -231,7 +255,7 @@ function drawReader(dir){
 }
 function bindSwipe(s){
  let x0=null,y0=0,dx=0,t0=0,drag=false;
- s.addEventListener('pointerdown',e=>{x0=e.clientX;y0=e.clientY;dx=0;t0=Date.now();drag=false;s.setPointerCapture(e.pointerId)});
+ s.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;x0=e.clientX;y0=e.clientY;dx=0;t0=Date.now();drag=false;s.setPointerCapture(e.pointerId)});
  s.addEventListener('pointermove',e=>{if(x0==null)return;dx=e.clientX-x0;if(Math.abs(dx)>8)drag=true;if(drag){const sl=$('#sl');sl.style.transition='none';sl.style.transform=`translateX(${dx}px)`;sl.style.opacity=String(1-Math.min(.5,Math.abs(dx)/600))}});
  const end=e=>{if(x0==null)return;const dt=Date.now()-t0,W=s.clientWidth;const sx=x0;x0=null;
   if(drag&&(Math.abs(dx)>W*.18||(Math.abs(dx)>30&&dt<300))){const d=dx>0?1:-1;if(!go(d))snap()}
@@ -335,6 +359,7 @@ function route(){
 addEventListener('hashchange',()=>{if(R&&location.hash.slice(1)===R.b.id)return;R=null;drawReader();route()});
 document.addEventListener('click',e=>{
  const o=e.target.closest('[data-open]');if(o){openBook(o.dataset.open);return}
+ const cz=e.target.closest('[data-close]');if(cz){closeReader();return}
  const c=e.target.closest('[data-copy]');if(c){navigator.clipboard.writeText($('#'+c.dataset.copy).textContent).then(()=>{c.textContent='コピーしました'},()=>{c.textContent='長押しで選択してコピーしてください'})}
 });
 fetch('books.json').then(r=>r.json()).then(d=>{BOOKS=d;route()}).catch(()=>{$('#main').innerHTML='<p class="band err">本棚を読み込めませんでした。</p>'});
