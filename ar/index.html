@@ -20,7 +20,7 @@
   #arBtn[disabled]{background:#bbb;color:#555;cursor:not-allowed}
   #snd{background:#fff;color:var(--ink)}
   button:focus-visible{outline:3px solid #2a6df4;outline-offset:2px}
-  #note{margin:0;padding:4px 18px 16px;text-align:center;font-size:12.5px;line-height:1.6;opacity:.8}
+  #note{white-space:pre-line;margin:0;padding:4px 18px 16px;text-align:center;font-size:12.5px;line-height:1.6;opacity:.8}
 </style>
 </head>
 <body>
@@ -43,7 +43,7 @@
 <script>
   const mv=document.getElementById('mv'),arBtn=document.getElementById('arBtn'),note=document.getElementById('note'),snd=document.getElementById('snd'),au=document.getElementById('au');
   mv.addEventListener('load',()=>{
-    if(mv.canActivateAR){note.textContent='「ARで現実に出す」を押して、床にスマホを向けてください。身長は約1mです。';}
+    if(mv.canActivateAR){note.textContent='「ARで現実に出す」を押したら、1〜2mほど前の床にカメラを向けて、ゆっくり左右に動かしてください（真下ではなく斜め前がコツ）。\n明るい場所がおすすめ。向きは2本指でひねると変えられます。\n※バス・電車などの乗り物の中では位置がずれるため、ご利用いただけません。';}
     else{arBtn.disabled=true;note.textContent='この画面ではARを起動できません（3Dプレビューのみ）。公開URLをスマホのSafari / Chromeで開くとARボタンが使えます。';}
   });
   arBtn.addEventListener('click',()=>{try{mv.activateAR();}catch(e){note.textContent='ARを起動できませんでした。';}});
