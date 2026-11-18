@@ -54,13 +54,6 @@
     <button type="button" data-act="Spin">くるっ</button>
    </div>
    <div class="row">
-    <button type="button" class="ic" data-rot="1" aria-label="左に回す" title="左に回す">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4v5h5"/><path d="M4.6 14a8 8 0 1 0 1.8-8.3L4 9"/></svg>
-    </button>
-    <button type="button" class="ic" data-rot="-1" aria-label="右に回す" title="右に回す">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 4v5h-5"/><path d="M19.4 14a8 8 0 1 1-1.8-8.3L20 9"/></svg>
-    </button>
-    <span class="sep" aria-hidden="true"></span>
     <button type="button" class="ic" id="shot" aria-label="写真を撮る" title="写真を撮る">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.8"/></svg>
     </button>
@@ -81,7 +74,9 @@
   let tt=null;
   function toast(msg,ms=2600){toastEl.textContent=msg;toastEl.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>toastEl.classList.remove('show'),ms);}
   const inAR=()=>mv.getAttribute('ar-status')==='session-started';
-  const AR_MSG='AR中の撮影は、スマホ本体のスクリーンショット／画面録画をご利用ください';
+  const isIOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  const AR_SHOT=isIOS?'写真はAR画面のシャッターボタン（タップ）で撮れます':'スクリーンショット：電源ボタン＋音量ダウンを同時押し';
+  const AR_REC=isIOS?'動画はAR画面のシャッターボタンを長押しで撮れます':'画面録画は、ARを始める前にクイック設定の「スクリーンレコード」を開始してください（AR中に画面上部を引き下げるとARが終了します）';
 
   // ---- 効果音（その場で合成） ----
   let ac=null,audioDest=null;
@@ -108,24 +103,21 @@
   mv.addEventListener('finished',backToDance);
   document.querySelectorAll('[data-act]').forEach(b=>b.addEventListener('click',()=>act(b.dataset.act)));
 
-  // ---- 向きを変える（ボタン＋AR中の2本指ひねり） ----
-  let yaw=0,shown=0,rotRaf=null;
-  function applyYaw(){ mv.orientation=`0deg 0deg ${shown.toFixed(1)}deg`; }
-  function tweenYaw(){ const d=yaw-shown; if(Math.abs(d)<0.3){shown=yaw;applyYaw();rotRaf=null;return;} shown+=d*0.25; applyYaw(); rotRaf=requestAnimationFrame(tweenYaw); }
-  function setYaw(v,smooth=true){ yaw=v; if(!smooth){shown=yaw;applyYaw();return;} if(!rotRaf) rotRaf=requestAnimationFrame(tweenYaw); }
-  let holdT=null;
-  document.querySelectorAll('[data-rot]').forEach(b=>{
-    const dir=+b.dataset.rot;
-    const start=e=>{ e.preventDefault(); setYaw(yaw+45*dir); clearInterval(holdT); holdT=setInterval(()=>setYaw(yaw+15*dir),180); };
-    const end=()=>clearInterval(holdT);
-    b.addEventListener('pointerdown',start); ['pointerup','pointercancel','pointerleave'].forEach(t=>b.addEventListener(t,end));
-    b.addEventListener('click',e=>{ if(e.detail===0) setYaw(yaw+45*dir); }); // キーボード操作用
-  });
-  let twist=null;
+  // ---- 向きを変える（AR中の2本指：ひねる＝横回転／上下になぞる＝縦回転） ----
+  let yaw=0,pitch=0;
+  function applyRot(){ mv.orientation=`0deg ${pitch.toFixed(1)}deg ${yaw.toFixed(1)}deg`; }
+  let g2=null;
   const ang=t=>Math.atan2(t[1].clientY-t[0].clientY,t[1].clientX-t[0].clientX)*180/Math.PI;
-  mv.addEventListener('touchstart',e=>{ if(inAR()&&e.touches.length===2){ twist={a:ang(e.touches),y:yaw}; } },{passive:true});
-  mv.addEventListener('touchmove',e=>{ if(twist&&e.touches.length===2){ let d=ang(e.touches)-twist.a; if(d>180)d-=360; if(d<-180)d+=360; setYaw(twist.y-d,false); } },{passive:true});
-  mv.addEventListener('touchend',e=>{ if(e.touches.length<2) twist=null; },{passive:true});
+  const midY=t=>(t[0].clientY+t[1].clientY)/2;
+  mv.addEventListener('touchstart',e=>{ if(inAR()&&e.touches.length===2){ g2={a:ang(e.touches),m:midY(e.touches),y:yaw,p:pitch}; } },{passive:true});
+  mv.addEventListener('touchmove',e=>{
+    if(!g2||e.touches.length!==2) return;
+    let d=ang(e.touches)-g2.a; if(d>180)d-=360; if(d<-180)d+=360;
+    yaw=g2.y-d;
+    pitch=g2.p+(midY(e.touches)-g2.m)*0.5;   // 上下に1px動かすと0.5°
+    applyRot();
+  },{passive:true});
+  mv.addEventListener('touchend',e=>{ if(e.touches.length<2) g2=null; },{passive:true});
 
   // ---- 保存（共有シートが使えればそこへ、なければダウンロード） ----
   async function save(blob,name){
@@ -138,7 +130,7 @@
 
   // ---- 写真 ----
   shotBtn.addEventListener('click',async()=>{
-    if(inAR()){toast(AR_MSG,4000);return;}
+    if(inAR()){toast(AR_SHOT,4000);return;}
     try{ const blob=await mv.toBlob({mimeType:'image/png'}); await save(blob,`melomonta_${stamp()}.png`); }
     catch(e){ toast('写真を撮れませんでした'); }
   });
@@ -150,7 +142,7 @@
   function stopRec(){ if(rec&&rec.state!=='inactive') rec.stop(); }
   recBtn.addEventListener('click',()=>{
     if(rec&&rec.state==='recording'){stopRec();return;}
-    if(inAR()){toast(AR_MSG,4000);return;}
+    if(inAR()){toast(AR_REC,5500);return;}
     const c0=mv.shadowRoot&&(mv.shadowRoot.querySelector('canvas.show')||mv.shadowRoot.querySelector('canvas'));
     if(!c0||!c0.captureStream||!window.MediaRecorder){toast('この端末では録画できません');return;}
     try{
@@ -190,7 +182,7 @@
 
   // ---- AR・音 ----
   mv.addEventListener('load',()=>{
-    if(mv.canActivateAR){note.textContent='「ARで現実に出す」を押したら、1〜2mほど前の床にカメラを向けて、ゆっくり左右に動かしてください（真下ではなく斜め前がコツ）。\n明るい場所がおすすめ。向きは下の回転ボタン（または2本指でひねる）で変えられます。\n※バス・電車などの乗り物の中では位置がずれるため、ご利用いただけません。\n※AR中の下のボタン操作はAndroidのみ対応です（iPhoneのARでは踊るだけになります）。';}
+    if(mv.canActivateAR){note.textContent='「ARで現実に出す」を押したら、1〜2mほど前の床にカメラを向けて、ゆっくり左右に動かしてください（真下ではなく斜め前がコツ）。\n明るい場所がおすすめ。向きは2本指で変えられます（ひねる＝横回転、そろえて上下になぞる＝縦回転）。\nAR中を写真・動画に残すなら、先にスマホの画面録画を始めてからARを起動するのがおすすめです。\n※バス・電車などの乗り物の中では位置がずれるため、ご利用いただけません。\n※AR中の下のボタン操作はAndroidのみ対応です（iPhoneのARでは踊るだけになります）。';}
     else{arBtn.disabled=true;note.textContent='この画面ではARを起動できません（3Dプレビューのみ）。公開URLをスマホのSafari / Chromeで開くとARボタンが使えます。';}
   });
   arBtn.addEventListener('click',()=>{try{mv.activateAR();}catch(e){note.textContent='ARを起動できませんでした。';}});
