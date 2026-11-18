@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>メロもんた AR サンバ</title>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.0.0/dist/model-viewer.min.js"></script>
+<style>
+  :root{--red:#a3122b;--cream:#f4ecdc;--ink:#1c1614}
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{background:var(--cream);color:var(--ink);font-family:"Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;display:flex;flex-direction:column}
+  header{padding:14px 18px 6px;text-align:center}
+  h1{margin:0;font-size:clamp(22px,6vw,36px);font-weight:900;color:var(--red);letter-spacing:.02em}
+  header p{margin:4px 0 0;font-size:13px;opacity:.75}
+  model-viewer{flex:1;width:100%;min-height:300px;background:radial-gradient(circle at 50% 62%,#fff8e6 0,var(--cream) 62%);--progress-bar-color:var(--red)}
+  .bar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:12px 14px 6px}
+  button{font:inherit;font-weight:800;font-size:16px;border-radius:999px;padding:13px 22px;border:3px solid var(--ink);cursor:pointer;min-height:48px}
+  #arBtn{background:var(--red);color:#fff}
+  #arBtn[disabled]{background:#bbb;color:#555;cursor:not-allowed}
+  #snd{background:#fff;color:var(--ink)}
+  button:focus-visible{outline:3px solid #2a6df4;outline-offset:2px}
+  #note{margin:0;padding:4px 18px 16px;text-align:center;font-size:12.5px;line-height:1.6;opacity:.8}
+</style>
+</head>
+<body>
+<header>
+  <h1>メロもんた AR サンバ</h1>
+  <p>NO MORE SUIKA ― でもスイカは離さない</p>
+</header>
+<model-viewer id="mv" src="melomonta.glb" ios-src="melomonta.usdz" alt="スイカを持って踊るメロン頭のキャラクター、メロもんたの3Dモデル"
+  ar ar-modes="webxr scene-viewer quick-look" ar-scale="auto" ar-placement="floor"
+  camera-controls touch-action="pan-y" autoplay shadow-intensity="1" shadow-softness="0.8"
+  camera-orbit="20deg 80deg 3.7m" camera-target="0m 0.5m 0m" exposure="1.1">
+  <span slot="ar-button"></span>
+</model-viewer>
+<div class="bar">
+  <button id="arBtn" type="button">ARで現実に出す</button>
+  <button id="snd" type="button" aria-pressed="false">♪ サンバ ON</button>
+</div>
+<p id="note">指でドラッグすると回せます。</p>
+<audio id="au" src="samba.mp3" loop preload="auto"></audio>
+<script>
+  const mv=document.getElementById('mv'),arBtn=document.getElementById('arBtn'),note=document.getElementById('note'),snd=document.getElementById('snd'),au=document.getElementById('au');
+  mv.addEventListener('load',()=>{
+    if(mv.canActivateAR){note.textContent='「ARで現実に出す」を押して、床にスマホを向けてください。身長は約1mです。';}
+    else{arBtn.disabled=true;note.textContent='この画面ではARを起動できません（3Dプレビューのみ）。公開URLをスマホのSafari / Chromeで開くとARボタンが使えます。';}
+  });
+  arBtn.addEventListener('click',()=>{try{mv.activateAR();}catch(e){note.textContent='ARを起動できませんでした。';}});
+  snd.addEventListener('click',async()=>{
+    try{
+      if(au.paused){await au.play();mv.currentTime=au.currentTime%4;snd.textContent='♪ サンバ OFF';snd.setAttribute('aria-pressed','true');}
+      else{au.pause();snd.textContent='♪ サンバ ON';snd.setAttribute('aria-pressed','false');}
+    }catch(e){note.textContent='この画面では音を再生できませんでした。';}
+  });
+</script>
+</body>
+</html>
