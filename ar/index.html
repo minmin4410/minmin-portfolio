@@ -14,18 +14,24 @@
   h1{margin:0;font-size:clamp(22px,6vw,36px);font-weight:900;color:var(--red);letter-spacing:.02em}
   header p{margin:4px 0 0;font-size:13px;opacity:.75}
   model-viewer{flex:1;width:100%;min-height:320px;background:radial-gradient(circle at 50% 62%,#fff8e6 0,var(--cream) 62%);--progress-bar-color:var(--red)}
-  .acts{position:absolute;left:0;right:0;bottom:12px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:0 10px;pointer-events:none}
-  .acts button{pointer-events:auto;font-size:14px;padding:9px 14px;min-height:42px;background:#fff;border:3px solid var(--ink)}
-  .hint{position:absolute;left:0;right:0;top:10px;text-align:center;font-size:12.5px;font-weight:700;pointer-events:none}
-  .hint span{background:rgba(255,255,255,.85);border-radius:999px;padding:5px 12px}
-  model-viewer[ar-status="session-started"] .hint{top:calc(env(safe-area-inset-top) + 64px)}
+  button{font:inherit;font-weight:800;border-radius:999px;border:3px solid var(--ink);cursor:pointer;color:var(--ink);background:#fff}
+  button:focus-visible{outline:3px solid #2a6df4;outline-offset:2px}
+  .acts{position:absolute;left:0;right:0;bottom:12px;display:flex;flex-direction:column;gap:8px;align-items:center;padding:0 10px;pointer-events:none}
+  .row{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap}
+  .acts button{pointer-events:auto;font-size:14px;padding:8px 14px;min-height:44px}
+  .acts .ic{width:48px;height:48px;padding:0;display:inline-flex;align-items:center;justify-content:center}
+  .acts .ic svg{width:24px;height:24px}
+  .sep{width:2px;height:30px;background:var(--ink);opacity:.25;border-radius:2px}
+  #rec.on{background:var(--red);border-color:var(--red);color:#fff;animation:blink 1s infinite}
+  @keyframes blink{50%{opacity:.6}}
+  .toast{position:absolute;left:50%;top:12px;transform:translateX(-50%);max-width:92%;background:rgba(28,22,20,.88);color:#fff;font-size:13px;font-weight:700;line-height:1.5;padding:8px 14px;border-radius:14px;text-align:center;pointer-events:none;opacity:0;transition:opacity .2s}
+  .toast.show{opacity:1}
+  model-viewer[ar-status="session-started"] .toast{top:calc(env(safe-area-inset-top) + 64px)}
   model-viewer[ar-status="session-started"] .acts{bottom:calc(env(safe-area-inset-bottom) + 28px)}
   .bar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:12px 14px 6px}
-  button{font:inherit;font-weight:800;font-size:16px;border-radius:999px;padding:13px 22px;border:3px solid var(--ink);cursor:pointer;min-height:48px;color:var(--ink)}
+  .bar button{font-size:16px;padding:13px 22px;min-height:48px}
   #arBtn{background:var(--red);color:#fff}
   #arBtn[disabled]{background:#bbb;color:#555;cursor:not-allowed}
-  #snd{background:#fff}
-  button:focus-visible{outline:3px solid #2a6df4;outline-offset:2px}
   #note{white-space:pre-line;margin:0;padding:4px 18px 16px;text-align:center;font-size:12.5px;line-height:1.6;opacity:.8}
 </style>
 </head>
@@ -40,11 +46,28 @@
   shadow-intensity="1" shadow-softness="0.8"
   camera-orbit="20deg 80deg 3.7m" camera-target="0m 0.5m 0m" exposure="1.1">
   <span slot="ar-button"></span>
-  <div class="hint"><span>タップで反応！ 頭→しゃがむ／おなか→くるっ／足元→ジャンプ</span></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <div class="acts">
+   <div class="row">
     <button type="button" data-act="Jump">ジャンプ</button>
     <button type="button" data-act="Bonk">しゃがむ</button>
     <button type="button" data-act="Spin">くるっ</button>
+   </div>
+   <div class="row">
+    <button type="button" class="ic" data-rot="1" aria-label="左に回す" title="左に回す">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4v5h5"/><path d="M4.6 14a8 8 0 1 0 1.8-8.3L4 9"/></svg>
+    </button>
+    <button type="button" class="ic" data-rot="-1" aria-label="右に回す" title="右に回す">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 4v5h-5"/><path d="M19.4 14a8 8 0 1 1-1.8-8.3L20 9"/></svg>
+    </button>
+    <span class="sep" aria-hidden="true"></span>
+    <button type="button" class="ic" id="shot" aria-label="写真を撮る" title="写真を撮る">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.8"/></svg>
+    </button>
+    <button type="button" class="ic" id="rec" aria-label="録画を開始" title="録画" aria-pressed="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6.5" width="13" height="11" rx="2"/><path d="M15.5 10.5l6-3.5v10l-6-3.5z"/></svg>
+    </button>
+   </div>
   </div>
 </model-viewer>
 <div class="bar">
@@ -54,19 +77,25 @@
 <p id="note">指でドラッグすると回せます。</p>
 <audio id="au" src="samba.mp3" loop preload="auto"></audio>
 <script>
-  const mv=document.getElementById('mv'),arBtn=document.getElementById('arBtn'),note=document.getElementById('note'),snd=document.getElementById('snd'),au=document.getElementById('au');
+  const mv=document.getElementById('mv'),arBtn=document.getElementById('arBtn'),note=document.getElementById('note'),snd=document.getElementById('snd'),au=document.getElementById('au'),toastEl=document.getElementById('toast'),shotBtn=document.getElementById('shot'),recBtn=document.getElementById('rec');
+  let tt=null;
+  function toast(msg,ms=2600){toastEl.textContent=msg;toastEl.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>toastEl.classList.remove('show'),ms);}
+  const inAR=()=>mv.getAttribute('ar-status')==='session-started';
+  const AR_MSG='AR中の撮影は、スマホ本体のスクリーンショット／画面録画をご利用ください';
+
   // ---- 効果音（その場で合成） ----
-  let ac=null;
+  let ac=null,audioDest=null;
+  function ctx(){ac=ac||new (window.AudioContext||window.webkitAudioContext)();return ac;}
   function sfx(kind){
     try{
-      ac=ac||new (window.AudioContext||window.webkitAudioContext)();
-      const t=ac.currentTime,o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);
+      const a=ctx(),t=a.currentTime,o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);if(audioDest)g.connect(audioDest);
       if(kind==='Jump'){o.type='square';o.frequency.setValueAtTime(220,t);o.frequency.exponentialRampToValueAtTime(880,t+.25);g.gain.setValueAtTime(.15,t);g.gain.exponentialRampToValueAtTime(.001,t+.35);o.start(t);o.stop(t+.36);}
       else if(kind==='Bonk'){o.type='triangle';o.frequency.setValueAtTime(900,t);o.frequency.exponentialRampToValueAtTime(140,t+.18);g.gain.setValueAtTime(.4,t);g.gain.exponentialRampToValueAtTime(.001,t+.3);o.start(t);o.stop(t+.31);}
       else{o.type='sawtooth';o.frequency.setValueAtTime(300,t);o.frequency.linearRampToValueAtTime(1200,t+.5);o.frequency.linearRampToValueAtTime(400,t+.9);g.gain.setValueAtTime(.08,t);g.gain.linearRampToValueAtTime(.001,t+1);o.start(t);o.stop(t+1);}
     }catch(e){}
   }
-  // ---- アクション ----
+
+  // ---- アクション（ボタンのみ） ----
   const DUR={Jump:1.3,Bonk:1.6,Spin:1.4};
   let busy=false,timer=null;
   function backToDance(){ if(!busy) return; busy=false; clearTimeout(timer); mv.animationName='Dance'; mv.play(); }
@@ -77,20 +106,91 @@
     timer=setTimeout(backToDance,(DUR[name]+0.25)*1000);
   }
   mv.addEventListener('finished',backToDance);
-  document.querySelectorAll('[data-act]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();act(b.dataset.act);}));
-  // ---- キャラをタップ（ドラッグで回したときは反応しない） ----
-  let down=null;
-  mv.addEventListener('pointerdown',e=>{down={x:e.clientX,y:e.clientY};});
-  mv.addEventListener('click',e=>{
-    if(e.target.closest&&e.target.closest('button')) return;
-    if(down&&Math.hypot(e.clientX-down.x,e.clientY-down.y)>10) return;
-    const hit=mv.positionAndNormalFromPoint(e.clientX,e.clientY);
-    if(!hit) return;
-    const y=hit.position.y;          // 足元0m〜頭頂約0.98m
-    act(y>0.55?'Bonk':(y<0.28?'Jump':'Spin'));
+  document.querySelectorAll('[data-act]').forEach(b=>b.addEventListener('click',()=>act(b.dataset.act)));
+
+  // ---- 向きを変える（ボタン＋AR中の2本指ひねり） ----
+  let yaw=0,shown=0,rotRaf=null;
+  function applyYaw(){ mv.orientation=`0deg 0deg ${shown.toFixed(1)}deg`; }
+  function tweenYaw(){ const d=yaw-shown; if(Math.abs(d)<0.3){shown=yaw;applyYaw();rotRaf=null;return;} shown+=d*0.25; applyYaw(); rotRaf=requestAnimationFrame(tweenYaw); }
+  function setYaw(v,smooth=true){ yaw=v; if(!smooth){shown=yaw;applyYaw();return;} if(!rotRaf) rotRaf=requestAnimationFrame(tweenYaw); }
+  let holdT=null;
+  document.querySelectorAll('[data-rot]').forEach(b=>{
+    const dir=+b.dataset.rot;
+    const start=e=>{ e.preventDefault(); setYaw(yaw+45*dir); clearInterval(holdT); holdT=setInterval(()=>setYaw(yaw+15*dir),180); };
+    const end=()=>clearInterval(holdT);
+    b.addEventListener('pointerdown',start); ['pointerup','pointercancel','pointerleave'].forEach(t=>b.addEventListener(t,end));
+    b.addEventListener('click',e=>{ if(e.detail===0) setYaw(yaw+45*dir); }); // キーボード操作用
   });
+  let twist=null;
+  const ang=t=>Math.atan2(t[1].clientY-t[0].clientY,t[1].clientX-t[0].clientX)*180/Math.PI;
+  mv.addEventListener('touchstart',e=>{ if(inAR()&&e.touches.length===2){ twist={a:ang(e.touches),y:yaw}; } },{passive:true});
+  mv.addEventListener('touchmove',e=>{ if(twist&&e.touches.length===2){ let d=ang(e.touches)-twist.a; if(d>180)d-=360; if(d<-180)d+=360; setYaw(twist.y-d,false); } },{passive:true});
+  mv.addEventListener('touchend',e=>{ if(e.touches.length<2) twist=null; },{passive:true});
+
+  // ---- 保存（共有シートが使えればそこへ、なければダウンロード） ----
+  async function save(blob,name){
+    const file=new File([blob],name,{type:blob.type});
+    try{ if(navigator.canShare&&navigator.canShare({files:[file]})){ await navigator.share({files:[file],title:'メロもんた AR サンバ'}); return; } }catch(e){ if(e&&e.name==='AbortError') return; }
+    const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);
+    toast('保存しました');
+  }
+  const stamp=()=>{const d=new Date(),p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;};
+
+  // ---- 写真 ----
+  shotBtn.addEventListener('click',async()=>{
+    if(inAR()){toast(AR_MSG,4000);return;}
+    try{ const blob=await mv.toBlob({mimeType:'image/png'}); await save(blob,`melomonta_${stamp()}.png`); }
+    catch(e){ toast('写真を撮れませんでした'); }
+  });
+
+  // ---- 録画（最大30秒） ----
+  let rec=null,chunks=[],recTimer=null;
+  function pickType(){const c=['video/mp4;codecs=avc1','video/mp4','video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'];return c.find(t=>window.MediaRecorder&&MediaRecorder.isTypeSupported(t))||'';}
+  let auSrc=null;
+  function stopRec(){ if(rec&&rec.state!=='inactive') rec.stop(); }
+  recBtn.addEventListener('click',()=>{
+    if(rec&&rec.state==='recording'){stopRec();return;}
+    if(inAR()){toast(AR_MSG,4000);return;}
+    const c0=mv.shadowRoot&&(mv.shadowRoot.querySelector('canvas.show')||mv.shadowRoot.querySelector('canvas'));
+    if(!c0||!c0.captureStream||!window.MediaRecorder){toast('この端末では録画できません');return;}
+    try{
+      // 3D画面をいったん映像として受け取り、背景色つきのキャンバスに描き写して録画する
+      const v=document.createElement('video'); v.muted=true; v.playsInline=true; v.srcObject=c0.captureStream(30); v.play().catch(()=>{});
+      const dpr=Math.min(2,window.devicePixelRatio||1);
+      const out=document.createElement('canvas'); out.width=Math.round(mv.clientWidth*dpr/2)*2; out.height=Math.round(mv.clientHeight*dpr/2)*2;
+      const g=out.getContext('2d');
+      const draw=()=>{
+        if(!rec||rec.state==='inactive'){ v.srcObject=null; return; }
+        g.fillStyle='#f4ecdc'; g.fillRect(0,0,out.width,out.height);
+        if(v.videoWidth){
+          const cw=parseFloat(c0.style.width)||mv.clientWidth, ch=parseFloat(c0.style.height)||mv.clientHeight;
+          g.drawImage(v,0,0,v.videoWidth*Math.min(1,mv.clientWidth/cw),v.videoHeight*Math.min(1,mv.clientHeight/ch),0,0,out.width,out.height);
+        }
+        requestAnimationFrame(draw);
+      };
+      const stream=out.captureStream(30);
+      const a=ctx(); audioDest=a.createMediaStreamDestination();
+      if(!auSrc){auSrc=a.createMediaElementSource(au);auSrc.connect(a.destination);}
+      auSrc.connect(audioDest);
+      audioDest.stream.getAudioTracks().forEach(t=>stream.addTrack(t));
+      const type=pickType(); rec=new MediaRecorder(stream,type?{mimeType:type,videoBitsPerSecond:6e6}:undefined); chunks=[];
+      rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data);};
+      rec.onstop=()=>{
+        clearTimeout(recTimer); recBtn.classList.remove('on'); recBtn.setAttribute('aria-pressed','false'); recBtn.setAttribute('aria-label','録画を開始');
+        try{auSrc.disconnect(audioDest);}catch(e){} audioDest=null;
+        const t=rec.mimeType||type||'video/webm'; const blob=new Blob(chunks,{type:t});
+        save(blob,`melomonta_${stamp()}.${t.includes('mp4')?'mp4':'webm'}`);
+      };
+      rec.start(250); draw();
+      recBtn.classList.add('on'); recBtn.setAttribute('aria-pressed','true'); recBtn.setAttribute('aria-label','録画を停止');
+      toast('録画中…もう一度押すと停止（最大30秒）');
+      recTimer=setTimeout(stopRec,30000);
+    }catch(e){ toast('録画を開始できませんでした'); }
+  });
+
+  // ---- AR・音 ----
   mv.addEventListener('load',()=>{
-    if(mv.canActivateAR){note.textContent='「ARで現実に出す」を押したら、1〜2mほど前の床にカメラを向けて、ゆっくり左右に動かしてください（真下ではなく斜め前がコツ）。\n明るい場所がおすすめ。向きは2本指でひねると変えられます。\n※バス・電車などの乗り物の中では位置がずれるため、ご利用いただけません。\n※タップでの反応はAndroidのみ対応です（iPhoneのARでは踊るだけになります）。';}
+    if(mv.canActivateAR){note.textContent='「ARで現実に出す」を押したら、1〜2mほど前の床にカメラを向けて、ゆっくり左右に動かしてください（真下ではなく斜め前がコツ）。\n明るい場所がおすすめ。向きは下の回転ボタン（または2本指でひねる）で変えられます。\n※バス・電車などの乗り物の中では位置がずれるため、ご利用いただけません。\n※AR中の下のボタン操作はAndroidのみ対応です（iPhoneのARでは踊るだけになります）。';}
     else{arBtn.disabled=true;note.textContent='この画面ではARを起動できません（3Dプレビューのみ）。公開URLをスマホのSafari / Chromeで開くとARボタンが使えます。';}
   });
   arBtn.addEventListener('click',()=>{try{mv.activateAR();}catch(e){note.textContent='ARを起動できませんでした。';}});
