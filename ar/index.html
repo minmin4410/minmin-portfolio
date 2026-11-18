@@ -22,8 +22,6 @@
   .acts .ic{width:48px;height:48px;padding:0;display:inline-flex;align-items:center;justify-content:center}
   .acts .ic svg{width:24px;height:24px}
   .sep{width:2px;height:30px;background:var(--ink);opacity:.25;border-radius:2px}
-  #rec.on{background:var(--red);border-color:var(--red);color:#fff;animation:blink 1s infinite}
-  @keyframes blink{50%{opacity:.6}}
   .toast{position:absolute;left:50%;top:12px;transform:translateX(-50%);max-width:92%;background:rgba(28,22,20,.88);color:#fff;font-size:13px;font-weight:700;line-height:1.5;padding:8px 14px;border-radius:14px;text-align:center;pointer-events:none;opacity:0;transition:opacity .2s}
   .toast.show{opacity:1}
   model-viewer[ar-status="session-started"] .toast{top:calc(env(safe-area-inset-top) + 64px)}
@@ -52,13 +50,8 @@
     <button type="button" data-act="Jump">ジャンプ</button>
     <button type="button" data-act="Bonk">しゃがむ</button>
     <button type="button" data-act="Spin">くるっ</button>
-   </div>
-   <div class="row">
-    <button type="button" class="ic" id="shot" aria-label="写真を撮る" title="写真を撮る">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.8"/></svg>
-    </button>
-    <button type="button" class="ic" id="rec" aria-label="録画を開始" title="録画" aria-pressed="false">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6.5" width="13" height="11" rx="2"/><path d="M15.5 10.5l6-3.5v10l-6-3.5z"/></svg>
+    <button type="button" class="ic" id="resetRot" aria-label="元の向きに戻す" title="元の向きに戻す">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/></svg>
     </button>
    </div>
   </div>
@@ -70,20 +63,17 @@
 <p id="note">指でドラッグすると回せます。</p>
 <audio id="au" src="samba.mp3" loop preload="auto"></audio>
 <script>
-  const mv=document.getElementById('mv'),arBtn=document.getElementById('arBtn'),note=document.getElementById('note'),snd=document.getElementById('snd'),au=document.getElementById('au'),toastEl=document.getElementById('toast'),shotBtn=document.getElementById('shot'),recBtn=document.getElementById('rec');
+  const mv=document.getElementById('mv'),arBtn=document.getElementById('arBtn'),note=document.getElementById('note'),snd=document.getElementById('snd'),au=document.getElementById('au'),toastEl=document.getElementById('toast');
   let tt=null;
   function toast(msg,ms=2600){toastEl.textContent=msg;toastEl.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>toastEl.classList.remove('show'),ms);}
   const inAR=()=>mv.getAttribute('ar-status')==='session-started';
-  const isIOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
-  const AR_SHOT=isIOS?'写真はAR画面のシャッターボタン（タップ）で撮れます':'スクリーンショット：電源ボタン＋音量ダウンを同時押し';
-  const AR_REC=isIOS?'動画はAR画面のシャッターボタンを長押しで撮れます':'画面録画は、ARを始める前にクイック設定の「スクリーンレコード」を開始してください（AR中に画面上部を引き下げるとARが終了します）';
 
   // ---- 効果音（その場で合成） ----
-  let ac=null,audioDest=null;
+  let ac=null;
   function ctx(){ac=ac||new (window.AudioContext||window.webkitAudioContext)();return ac;}
   function sfx(kind){
     try{
-      const a=ctx(),t=a.currentTime,o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);if(audioDest)g.connect(audioDest);
+      const a=ctx(),t=a.currentTime,o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);
       if(kind==='Jump'){o.type='square';o.frequency.setValueAtTime(220,t);o.frequency.exponentialRampToValueAtTime(880,t+.25);g.gain.setValueAtTime(.15,t);g.gain.exponentialRampToValueAtTime(.001,t+.35);o.start(t);o.stop(t+.36);}
       else if(kind==='Bonk'){o.type='triangle';o.frequency.setValueAtTime(900,t);o.frequency.exponentialRampToValueAtTime(140,t+.18);g.gain.setValueAtTime(.4,t);g.gain.exponentialRampToValueAtTime(.001,t+.3);o.start(t);o.stop(t+.31);}
       else{o.type='sawtooth';o.frequency.setValueAtTime(300,t);o.frequency.linearRampToValueAtTime(1200,t+.5);o.frequency.linearRampToValueAtTime(400,t+.9);g.gain.setValueAtTime(.08,t);g.gain.linearRampToValueAtTime(.001,t+1);o.start(t);o.stop(t+1);}
@@ -118,67 +108,7 @@
     applyRot();
   },{passive:true});
   mv.addEventListener('touchend',e=>{ if(e.touches.length<2) g2=null; },{passive:true});
-
-  // ---- 保存（共有シートが使えればそこへ、なければダウンロード） ----
-  async function save(blob,name){
-    const file=new File([blob],name,{type:blob.type});
-    try{ if(navigator.canShare&&navigator.canShare({files:[file]})){ await navigator.share({files:[file],title:'メロもんた AR サンバ'}); return; } }catch(e){ if(e&&e.name==='AbortError') return; }
-    const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);
-    toast('保存しました');
-  }
-  const stamp=()=>{const d=new Date(),p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;};
-
-  // ---- 写真 ----
-  shotBtn.addEventListener('click',async()=>{
-    if(inAR()){toast(AR_SHOT,4000);return;}
-    try{ const blob=await mv.toBlob({mimeType:'image/png'}); await save(blob,`melomonta_${stamp()}.png`); }
-    catch(e){ toast('写真を撮れませんでした'); }
-  });
-
-  // ---- 録画（最大30秒） ----
-  let rec=null,chunks=[],recTimer=null;
-  function pickType(){const c=['video/mp4;codecs=avc1','video/mp4','video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'];return c.find(t=>window.MediaRecorder&&MediaRecorder.isTypeSupported(t))||'';}
-  let auSrc=null;
-  function stopRec(){ if(rec&&rec.state!=='inactive') rec.stop(); }
-  recBtn.addEventListener('click',()=>{
-    if(rec&&rec.state==='recording'){stopRec();return;}
-    if(inAR()){toast(AR_REC,5500);return;}
-    const c0=mv.shadowRoot&&(mv.shadowRoot.querySelector('canvas.show')||mv.shadowRoot.querySelector('canvas'));
-    if(!c0||!c0.captureStream||!window.MediaRecorder){toast('この端末では録画できません');return;}
-    try{
-      // 3D画面をいったん映像として受け取り、背景色つきのキャンバスに描き写して録画する
-      const v=document.createElement('video'); v.muted=true; v.playsInline=true; v.srcObject=c0.captureStream(30); v.play().catch(()=>{});
-      const dpr=Math.min(2,window.devicePixelRatio||1);
-      const out=document.createElement('canvas'); out.width=Math.round(mv.clientWidth*dpr/2)*2; out.height=Math.round(mv.clientHeight*dpr/2)*2;
-      const g=out.getContext('2d');
-      const draw=()=>{
-        if(!rec||rec.state==='inactive'){ v.srcObject=null; return; }
-        g.fillStyle='#f4ecdc'; g.fillRect(0,0,out.width,out.height);
-        if(v.videoWidth){
-          const cw=parseFloat(c0.style.width)||mv.clientWidth, ch=parseFloat(c0.style.height)||mv.clientHeight;
-          g.drawImage(v,0,0,v.videoWidth*Math.min(1,mv.clientWidth/cw),v.videoHeight*Math.min(1,mv.clientHeight/ch),0,0,out.width,out.height);
-        }
-        requestAnimationFrame(draw);
-      };
-      const stream=out.captureStream(30);
-      const a=ctx(); audioDest=a.createMediaStreamDestination();
-      if(!auSrc){auSrc=a.createMediaElementSource(au);auSrc.connect(a.destination);}
-      auSrc.connect(audioDest);
-      audioDest.stream.getAudioTracks().forEach(t=>stream.addTrack(t));
-      const type=pickType(); rec=new MediaRecorder(stream,type?{mimeType:type,videoBitsPerSecond:6e6}:undefined); chunks=[];
-      rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data);};
-      rec.onstop=()=>{
-        clearTimeout(recTimer); recBtn.classList.remove('on'); recBtn.setAttribute('aria-pressed','false'); recBtn.setAttribute('aria-label','録画を開始');
-        try{auSrc.disconnect(audioDest);}catch(e){} audioDest=null;
-        const t=rec.mimeType||type||'video/webm'; const blob=new Blob(chunks,{type:t});
-        save(blob,`melomonta_${stamp()}.${t.includes('mp4')?'mp4':'webm'}`);
-      };
-      rec.start(250); draw();
-      recBtn.classList.add('on'); recBtn.setAttribute('aria-pressed','true'); recBtn.setAttribute('aria-label','録画を停止');
-      toast('録画中…もう一度押すと停止（最大30秒）');
-      recTimer=setTimeout(stopRec,30000);
-    }catch(e){ toast('録画を開始できませんでした'); }
-  });
+  document.getElementById('resetRot').addEventListener('click',()=>{ yaw=0; pitch=0; applyRot(); });
 
   // ---- AR・音 ----
   mv.addEventListener('load',()=>{
