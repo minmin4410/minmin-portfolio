@@ -3,29 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>メロもんた AR サンバ</title>
+<title>飛び出せみん子</title>
 <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.0.0/dist/model-viewer.min.js"></script>
 <style>
   :root{--red:#a3122b;--cream:#f4ecdc;--ink:#1c1614}
   *{box-sizing:border-box}
   html,body{height:100%;margin:0}
   body{background:var(--cream);color:var(--ink);font-family:"Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;display:flex;flex-direction:column}
-  header{padding:14px 18px 6px;text-align:center}
-  h1{margin:0;font-size:clamp(22px,6vw,36px);font-weight:900;color:var(--red);letter-spacing:.02em}
-  header p{margin:4px 0 0;font-size:13px;opacity:.75}
+  header{padding:14px 18px 4px;text-align:center}
+  h1{margin:0;font-size:clamp(24px,6.5vw,38px);font-weight:900;color:var(--red);letter-spacing:.04em}
+  .chars{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:8px 0 2px}
+  .chars button{font-size:14px;padding:6px 16px;min-height:40px;border-width:2.5px}
+  .chars button[aria-pressed="true"]{background:var(--ink);color:#fff}
   model-viewer{flex:1;width:100%;min-height:320px;background:radial-gradient(circle at 50% 62%,#fff8e6 0,var(--cream) 62%);--progress-bar-color:var(--red)}
   button{font:inherit;font-weight:800;border-radius:999px;border:3px solid var(--ink);cursor:pointer;color:var(--ink);background:#fff}
   button:focus-visible{outline:3px solid #2a6df4;outline-offset:2px}
-  .acts{position:absolute;left:0;right:0;bottom:12px;display:flex;flex-direction:column;gap:8px;align-items:center;padding:0 10px;pointer-events:none}
+  .acts{position:absolute;left:0;right:0;bottom:12px;display:flex;flex-direction:column;gap:8px;align-items:center;padding:0 8px;pointer-events:none}
   .row{display:flex;gap:6px;justify-content:center;align-items:center;flex-wrap:wrap}
   .acts button{pointer-events:auto;font-size:13px;padding:6px 11px;min-height:42px;border-width:2.5px}
   .acts .ic{width:42px;height:42px;padding:0;display:inline-flex;align-items:center;justify-content:center}
   .acts .ic svg{width:22px;height:22px}
-  .sep{width:2px;height:30px;background:var(--ink);opacity:.25;border-radius:2px}
   .wm{display:none;position:absolute;left:50%;transform:translateX(-50%);width:min(40%,170px);opacity:.35;pointer-events:none;user-select:none}
   model-viewer[ar-status="session-started"] .wm{display:block;bottom:calc(env(safe-area-inset-bottom) + 88px)}
   .acts .arSnd{display:none}
-  .arSnd svg{width:22px;height:22px}
   .arSnd .on{display:none} .arSnd[aria-pressed="true"] .on{display:inline} .arSnd[aria-pressed="true"] .off{display:none}
   .arSnd[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#fff}
   model-viewer[ar-status="session-started"] .acts .arSnd{display:inline-flex}
@@ -44,26 +44,23 @@
 </head>
 <body>
 <header>
-  <h1>メロもんた AR サンバ</h1>
-  <p>NO MORE SUIKA ― でもスイカは離さない</p>
+  <h1>飛び出せみん子</h1>
+  <div class="chars" id="chars" role="group" aria-label="キャラクターを選ぶ"></div>
 </header>
-<model-viewer id="mv" src="melomonta.glb" ios-src="melomonta.usdz" alt="スイカを持って踊るメロン頭のキャラクター、メロもんたの3Dモデル"
+<model-viewer id="mv" alt=""
   ar ar-modes="webxr scene-viewer quick-look" ar-scale="auto" ar-placement="floor"
-  camera-controls touch-action="pan-y" autoplay animation-name="Dance" animation-crossfade-duration="200"
+  camera-controls touch-action="pan-y" autoplay animation-crossfade-duration="200"
   shadow-intensity="1" shadow-softness="0.8"
   camera-orbit="20deg 80deg 3.7m" camera-target="0m 0.5m 0m" exposure="1.1">
   <span slot="ar-button"></span>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <img class="wm" src="tripo.png" alt="" aria-hidden="true">
   <div class="acts">
-   <div class="row">
-    <button type="button" data-act="Jump">ジャンプ</button>
-    <button type="button" data-act="Bonk">しゃがむ</button>
-    <button type="button" data-act="Spin">くるっ</button>
+   <div class="row" id="actRow">
     <button type="button" class="ic" id="resetRot" aria-label="元の向きに戻す" title="元の向きに戻す">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/></svg>
     </button>
-    <button type="button" class="ic arSnd" id="arSnd" aria-label="サンバを流す" aria-pressed="false" title="サンバ ON/OFF">
+    <button type="button" class="ic arSnd" id="arSnd" aria-label="BGMを流す" aria-pressed="false" title="BGM ON/OFF">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><g class="on"><path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18.5 6.5a7.5 7.5 0 0 1 0 11"/></g><g class="off"><path d="M16 9.5l5 5M21 9.5l-5 5"/></g></svg>
     </button>
    </div>
@@ -71,43 +68,89 @@
 </model-viewer>
 <div class="bar">
   <button id="arBtn" type="button">ARで現実に出す</button>
-  <button id="snd" type="button" aria-pressed="false">♪ サンバ ON</button>
+  <button id="snd" type="button" aria-pressed="false">♪ BGM ON</button>
 </div>
 <p id="note">指でドラッグすると回せます。</p>
 <footer class="logo"><img src="tripo.png" alt="TRIPO"></footer>
-<audio id="au" src="samba.mp3" loop preload="auto"></audio>
+<audio id="au" loop preload="auto"></audio>
 <script>
-  const mv=document.getElementById('mv'),arBtn=document.getElementById('arBtn'),note=document.getElementById('note'),snd=document.getElementById('snd'),au=document.getElementById('au'),toastEl=document.getElementById('toast');
+  // ===== キャラクター登録（追加するときはここに1件足す） =====
+  const CHARS=[
+    {id:'minko',name:'みん子',glb:'minko.glb',usdz:'minko.usdz',idle:'Idle',bgm:'minko_bgm.mp3',
+     alt:'黒髪ロングで青いセーターを着た女の子、みん子の3Dモデル',
+     acts:[{anim:'Wave',label:'あいさつ',dur:2.6,sfx:'chime'},
+           {anim:'Beatbox',label:'ビートボックス',dur:4.0,sfx:'beatbox'},
+           {anim:'Pose',label:'ポーズ',dur:2.6,sfx:'sparkle'}]},
+    {id:'melomonta',name:'メロもんた',glb:'melomonta.glb',usdz:'melomonta.usdz',idle:'Dance',bgm:'samba.mp3',
+     alt:'スイカを持って踊るメロン頭のキャラクター、メロもんたの3Dモデル',
+     acts:[{anim:'Jump',label:'ジャンプ',dur:1.3,sfx:'jump'},
+           {anim:'Bonk',label:'しゃがむ',dur:1.6,sfx:'bonk'},
+           {anim:'Spin',label:'くるっ',dur:1.4,sfx:'spin'}]},
+  ];
+
+  const mv=document.getElementById('mv'),arBtn=document.getElementById('arBtn'),note=document.getElementById('note'),snd=document.getElementById('snd'),au=document.getElementById('au'),toastEl=document.getElementById('toast'),actRow=document.getElementById('actRow'),charsEl=document.getElementById('chars'),arSnd=document.getElementById('arSnd'),resetBtn=document.getElementById('resetRot');
   let tt=null;
   function toast(msg,ms=2600){toastEl.textContent=msg;toastEl.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>toastEl.classList.remove('show'),ms);}
   const inAR=()=>mv.getAttribute('ar-status')==='session-started';
 
-  // ---- 効果音（その場で合成） ----
+  // ===== 効果音（その場で合成） =====
   let ac=null;
   function ctx(){ac=ac||new (window.AudioContext||window.webkitAudioContext)();return ac;}
-  function sfx(kind){
-    try{
-      const a=ctx(),t=a.currentTime,o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);
-      if(kind==='Jump'){o.type='square';o.frequency.setValueAtTime(220,t);o.frequency.exponentialRampToValueAtTime(880,t+.25);g.gain.setValueAtTime(.15,t);g.gain.exponentialRampToValueAtTime(.001,t+.35);o.start(t);o.stop(t+.36);}
-      else if(kind==='Bonk'){o.type='triangle';o.frequency.setValueAtTime(900,t);o.frequency.exponentialRampToValueAtTime(140,t+.18);g.gain.setValueAtTime(.4,t);g.gain.exponentialRampToValueAtTime(.001,t+.3);o.start(t);o.stop(t+.31);}
-      else{o.type='sawtooth';o.frequency.setValueAtTime(300,t);o.frequency.linearRampToValueAtTime(1200,t+.5);o.frequency.linearRampToValueAtTime(400,t+.9);g.gain.setValueAtTime(.08,t);g.gain.linearRampToValueAtTime(.001,t+1);o.start(t);o.stop(t+1);}
-    }catch(e){}
+  function tone(type,f0,f1,dur,vol,at=0,ramp='exp'){
+    const a=ctx(),t=a.currentTime+at,o=a.createOscillator(),g=a.createGain();o.type=type;o.connect(g);g.connect(a.destination);
+    o.frequency.setValueAtTime(f0,t); if(f1){ramp==='exp'?o.frequency.exponentialRampToValueAtTime(f1,t+dur*.8):o.frequency.linearRampToValueAtTime(f1,t+dur*.8);}
+    g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.001,t+dur);o.start(t);o.stop(t+dur+.02);
   }
+  function noise(dur,vol,at,type,freq){
+    const a=ctx(),t=a.currentTime+at,n=Math.floor(a.sampleRate*dur),buf=a.createBuffer(1,n,a.sampleRate),d=buf.getChannelData(0);
+    for(let i=0;i<n;i++)d[i]=Math.random()*2-1;
+    const s=a.createBufferSource(),f=a.createBiquadFilter(),g=a.createGain();s.buffer=buf;f.type=type;f.frequency.value=freq;
+    s.connect(f);f.connect(g);g.connect(a.destination);g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.001,t+dur);s.start(t);
+  }
+  const SFX={
+    jump:()=>tone('square',220,880,.35,.15),
+    bonk:()=>tone('triangle',900,140,.3,.4),
+    spin:()=>tone('sawtooth',300,1200,1,.08,0,'lin'),
+    chime:()=>{[1047,1319,1568,2093].forEach((f,i)=>tone('triangle',f,0,.5,.18,i*.11));},
+    sparkle:()=>{tone('sine',1800,3600,.5,.12);[2637,3136,3951].forEach((f,i)=>tone('sine',f,0,.35,.08,.25+i*.09));},
+    beatbox:()=>{ // B=キック、t=ハイハット、K=スネア（アニメの拍に合わせる）
+      const P='B.t.K.t.B.B.K.t.';const b0=.3,step=.25;
+      for(let i=0;i<14;i++){const c=P[i%P.length],at=b0+i*step;
+        if(c==='B'){tone('sine',160,45,.22,.9,at);}
+        else if(c==='K'){noise(.14,.55,at,'bandpass',1800);tone('triangle',220,0,.08,.25,at);}
+        else if(c==='t'){noise(.05,.3,at,'highpass',7000);}
+        if(c==='.') noise(.03,.12,at,'highpass',8000);
+      }},
+  };
+  function sfx(k){try{SFX[k]&&SFX[k]();}catch(e){}}
 
-  // ---- アクション（ボタンのみ） ----
-  const DUR={Jump:1.3,Bonk:1.6,Spin:1.4};
-  let busy=false,timer=null;
-  function backToDance(){ if(!busy) return; busy=false; clearTimeout(timer); mv.animationName='Dance'; mv.play(); }
-  function act(name){
+  // ===== キャラ切り替え・アクション =====
+  let cur=null,busy=false,timer=null;
+  function backToIdle(){ if(!busy) return; busy=false; clearTimeout(timer); mv.animationName=cur.idle; mv.play(); }
+  function act(a){
     if(busy) return;
-    busy=true; sfx(name);
-    mv.animationName=name; mv.currentTime=0; mv.play({repetitions:1});
-    timer=setTimeout(backToDance,(DUR[name]+0.25)*1000);
+    busy=true; sfx(a.sfx);
+    mv.animationName=a.anim; mv.currentTime=0; mv.play({repetitions:1});
+    timer=setTimeout(backToIdle,(a.dur+0.25)*1000);
   }
-  mv.addEventListener('finished',backToDance);
-  document.querySelectorAll('[data-act]').forEach(b=>b.addEventListener('click',()=>act(b.dataset.act)));
+  mv.addEventListener('finished',backToIdle);
 
-  // ---- 向きを変える（AR中の2本指：ひねる＝横回転／上下になぞる＝縦回転） ----
+  function selectChar(id){
+    const c=CHARS.find(x=>x.id===id)||CHARS[0];
+    if(cur&&cur.id===c.id) return;
+    cur=c; busy=false; clearTimeout(timer);
+    charsEl.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.id===c.id)));
+    mv.setAttribute('alt',c.alt); mv.setAttribute('ios-src',c.usdz); mv.animationName=c.idle; mv.src=c.glb;
+    actRow.querySelectorAll('[data-act]').forEach(b=>b.remove());
+    c.acts.slice().reverse().forEach(a=>{const b=document.createElement('button');b.type='button';b.dataset.act=a.anim;b.textContent=a.label;b.addEventListener('click',()=>act(a));actRow.prepend(b);});
+    yaw=0;pitch=0;applyRot();
+    const playing=!au.paused; au.src=c.bgm; if(playing) au.play().catch(()=>{}); syncSnd();
+    try{history.replaceState(null,'','#'+c.id);}catch(e){}
+  }
+  CHARS.forEach(c=>{const b=document.createElement('button');b.type='button';b.dataset.id=c.id;b.textContent=c.name;b.setAttribute('aria-pressed','false');b.addEventListener('click',()=>selectChar(c.id));charsEl.appendChild(b);});
+  mv.addEventListener('load',()=>{ mv.animationName=cur.idle; mv.play(); });
+
+  // ===== 向きを変える（AR中の2本指：ひねる＝横回転／上下になぞる＝縦回転） =====
   let yaw=0,pitch=0;
   function applyRot(){ mv.orientation=`0deg ${pitch.toFixed(1)}deg ${yaw.toFixed(1)}deg`; }
   let g2=null;
@@ -122,16 +165,17 @@
     applyRot();
   },{passive:true});
   mv.addEventListener('touchend',e=>{ if(e.touches.length<2) g2=null; },{passive:true});
-  document.getElementById('resetRot').addEventListener('click',()=>{ yaw=0; pitch=0; applyRot(); });
+  resetBtn.addEventListener('click',()=>{ yaw=0; pitch=0; applyRot(); });
 
-  // ---- AR・音 ----
+  // ===== AR・BGM =====
+  let noted=false;
   mv.addEventListener('load',()=>{
+    if(noted) return; noted=true;
     if(mv.canActivateAR){note.textContent='1〜2m先の床（斜め前）にカメラを向け、ゆっくり左右に動かすと現れます。\n2本指でひねる＝横回転、上下になぞる＝縦回転。撮影はスマホの画面録画で。\n※乗り物の中は非対応／ボタン操作はAndroidのみ';}
     else{arBtn.disabled=true;note.textContent='この画面ではARを使えません。スマホのChrome / Safariで開いてください。';}
   });
   arBtn.addEventListener('click',()=>{try{mv.activateAR();}catch(e){note.textContent='ARを起動できませんでした。';}});
-  const arSnd=document.getElementById('arSnd');
-  function syncSnd(){ const on=!au.paused; snd.textContent=on?'♪ サンバ OFF':'♪ サンバ ON'; snd.setAttribute('aria-pressed',String(on)); arSnd.setAttribute('aria-pressed',String(on)); arSnd.setAttribute('aria-label',on?'サンバを止める':'サンバを流す'); }
+  function syncSnd(){ const on=!au.paused; snd.textContent=on?'♪ BGM OFF':'♪ BGM ON'; snd.setAttribute('aria-pressed',String(on)); arSnd.setAttribute('aria-pressed',String(on)); arSnd.setAttribute('aria-label',on?'BGMを止める':'BGMを流す'); }
   async function toggleSnd(){
     try{ if(au.paused) await au.play(); else au.pause(); }
     catch(e){ note.textContent='この画面では音を再生できませんでした。'; toast('音を再生できませんでした'); }
@@ -139,6 +183,8 @@
   }
   snd.addEventListener('click',toggleSnd);
   arSnd.addEventListener('click',toggleSnd);
+
+  selectChar((location.hash||'').slice(1)||CHARS[0].id);
 </script>
 </body>
 </html>
