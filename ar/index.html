@@ -24,6 +24,11 @@
   .sep{width:2px;height:30px;background:var(--ink);opacity:.25;border-radius:2px}
   .wm{display:none;position:absolute;left:50%;transform:translateX(-50%);width:min(40%,170px);opacity:.35;pointer-events:none;user-select:none}
   model-viewer[ar-status="session-started"] .wm{display:block;bottom:calc(env(safe-area-inset-bottom) + 88px)}
+  .arSnd{display:none;position:absolute;right:calc(14px + env(safe-area-inset-right));top:calc(env(safe-area-inset-top) + 14px);width:48px;height:48px;padding:0;align-items:center;justify-content:center}
+  .arSnd svg{width:24px;height:24px}
+  .arSnd .on{display:none} .arSnd[aria-pressed="true"] .on{display:inline} .arSnd[aria-pressed="true"] .off{display:none}
+  .arSnd[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#fff}
+  model-viewer[ar-status="session-started"] .arSnd{display:inline-flex}
   .toast{position:absolute;left:50%;top:12px;transform:translateX(-50%);max-width:92%;background:rgba(28,22,20,.88);color:#fff;font-size:13px;font-weight:700;line-height:1.5;padding:8px 14px;border-radius:14px;text-align:center;pointer-events:none;opacity:0;transition:opacity .2s}
   .toast.show{opacity:1}
   model-viewer[ar-status="session-started"] .toast{top:calc(env(safe-area-inset-top) + 64px)}
@@ -48,6 +53,9 @@
   shadow-intensity="1" shadow-softness="0.8"
   camera-orbit="20deg 80deg 3.7m" camera-target="0m 0.5m 0m" exposure="1.1">
   <span slot="ar-button"></span>
+  <button type="button" class="ic arSnd" id="arSnd" aria-label="サンバを流す" aria-pressed="false" title="サンバ ON/OFF">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><g class="on"><path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18.5 6.5a7.5 7.5 0 0 1 0 11"/></g><g class="off"><path d="M16 9.5l5 5M21 9.5l-5 5"/></g></svg>
+  </button>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <img class="wm" src="tripo.png" alt="" aria-hidden="true">
   <div class="acts">
@@ -122,12 +130,15 @@
     else{arBtn.disabled=true;note.textContent='この画面ではARを使えません。スマホのChrome / Safariで開いてください。';}
   });
   arBtn.addEventListener('click',()=>{try{mv.activateAR();}catch(e){note.textContent='ARを起動できませんでした。';}});
-  snd.addEventListener('click',async()=>{
-    try{
-      if(au.paused){await au.play();snd.textContent='♪ サンバ OFF';snd.setAttribute('aria-pressed','true');}
-      else{au.pause();snd.textContent='♪ サンバ ON';snd.setAttribute('aria-pressed','false');}
-    }catch(e){note.textContent='この画面では音を再生できませんでした。';}
-  });
+  const arSnd=document.getElementById('arSnd');
+  function syncSnd(){ const on=!au.paused; snd.textContent=on?'♪ サンバ OFF':'♪ サンバ ON'; snd.setAttribute('aria-pressed',String(on)); arSnd.setAttribute('aria-pressed',String(on)); arSnd.setAttribute('aria-label',on?'サンバを止める':'サンバを流す'); }
+  async function toggleSnd(){
+    try{ if(au.paused) await au.play(); else au.pause(); }
+    catch(e){ note.textContent='この画面では音を再生できませんでした。'; toast('音を再生できませんでした'); }
+    syncSnd();
+  }
+  snd.addEventListener('click',toggleSnd);
+  arSnd.addEventListener('click',toggleSnd);
 </script>
 </body>
 </html>
