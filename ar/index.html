@@ -22,6 +22,8 @@
   .acts .ic{width:48px;height:48px;padding:0;display:inline-flex;align-items:center;justify-content:center}
   .acts .ic svg{width:24px;height:24px}
   .sep{width:2px;height:30px;background:var(--ink);opacity:.25;border-radius:2px}
+  .wm{position:absolute;left:50%;bottom:72px;transform:translateX(-50%);width:min(40%,170px);opacity:.35;pointer-events:none;user-select:none}
+  model-viewer[ar-status="session-started"] .wm{bottom:calc(env(safe-area-inset-bottom) + 88px)}
   .toast{position:absolute;left:50%;top:12px;transform:translateX(-50%);max-width:92%;background:rgba(28,22,20,.88);color:#fff;font-size:13px;font-weight:700;line-height:1.5;padding:8px 14px;border-radius:14px;text-align:center;pointer-events:none;opacity:0;transition:opacity .2s}
   .toast.show{opacity:1}
   model-viewer[ar-status="session-started"] .toast{top:calc(env(safe-area-inset-top) + 64px)}
@@ -45,6 +47,7 @@
   camera-orbit="20deg 80deg 3.7m" camera-target="0m 0.5m 0m" exposure="1.1">
   <span slot="ar-button"></span>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <img class="wm" src="tripo.png" alt="" aria-hidden="true">
   <div class="acts">
    <div class="row">
     <button type="button" data-act="Jump">ジャンプ</button>
