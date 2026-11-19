@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>飛び出せみん子</title>
+<title>飛び出せメロもんた</title>
 <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.0.0/dist/model-viewer.min.js"></script>
 <style>
   :root{--red:#a3122b;--cream:#f4ecdc;--ink:#1c1614}
@@ -12,6 +12,7 @@
   body{background:var(--cream);color:var(--ink);font-family:"Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;display:flex;flex-direction:column}
   header{padding:14px 18px 4px;text-align:center}
   h1{margin:0;font-size:clamp(24px,6.5vw,38px);font-weight:900;color:var(--red);letter-spacing:.04em}
+  .chars[hidden]{display:none}
   .chars{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:8px 0 2px}
   .chars button{font-size:14px;padding:6px 16px;min-height:40px;border-width:2.5px}
   .chars button[aria-pressed="true"]{background:var(--ink);color:#fff}
@@ -44,7 +45,7 @@
 </head>
 <body>
 <header>
-  <h1>飛び出せみん子</h1>
+  <h1>飛び出せメロもんた</h1>
   <div class="chars" id="chars" role="group" aria-label="キャラクターを選ぶ"></div>
 </header>
 <model-viewer id="mv" alt=""
@@ -76,11 +77,6 @@
 <script>
   // ===== キャラクター登録（追加するときはここに1件足す） =====
   const CHARS=[
-    {id:'minko',name:'みん子',glb:'minko.glb',usdz:'minko.usdz',idle:'Idle',bgm:'minko_bgm.mp3',
-     alt:'黒髪ロングで青いセーターを着た女の子、みん子の3Dモデル',
-     acts:[{anim:'Wave',label:'あいさつ',dur:2.6,sfx:'chime'},
-           {anim:'Beatbox',label:'ビートボックス',dur:4.0,sfx:'beatbox'},
-           {anim:'Pose',label:'ポーズ',dur:2.6,sfx:'sparkle'}]},
     {id:'melomonta',name:'メロもんた',glb:'melomonta.glb',usdz:'melomonta.usdz',idle:'Dance',bgm:'samba.mp3',
      alt:'スイカを持って踊るメロン頭のキャラクター、メロもんたの3Dモデル',
      acts:[{anim:'Jump',label:'ジャンプ',dur:1.3,sfx:'jump'},
@@ -147,6 +143,7 @@
     const playing=!au.paused; au.src=c.bgm; if(playing) au.play().catch(()=>{}); syncSnd();
     try{history.replaceState(null,'','#'+c.id);}catch(e){}
   }
+  if(CHARS.length<2) charsEl.hidden=true;
   CHARS.forEach(c=>{const b=document.createElement('button');b.type='button';b.dataset.id=c.id;b.textContent=c.name;b.setAttribute('aria-pressed','false');b.addEventListener('click',()=>selectChar(c.id));charsEl.appendChild(b);});
   mv.addEventListener('load',()=>{ mv.animationName=cur.idle; mv.play(); });
 
