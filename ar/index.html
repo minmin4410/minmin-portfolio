@@ -25,15 +25,15 @@
   .acts .ic{width:42px;height:42px;padding:0;display:inline-flex;align-items:center;justify-content:center}
   .acts .ic svg{width:22px;height:22px}
   .wm{display:none;position:absolute;left:50%;transform:translateX(-50%);width:min(40%,170px);opacity:.35;pointer-events:none;user-select:none}
-  model-viewer[ar-status="session-started"] .wm{display:block;bottom:calc(env(safe-area-inset-bottom) + 88px)}
+  model-viewer[data-ar] .wm{display:block;bottom:calc(env(safe-area-inset-bottom) + 88px)}
   .acts .arSnd{display:none}
   .arSnd .on{display:none} .arSnd[aria-pressed="true"] .on{display:inline} .arSnd[aria-pressed="true"] .off{display:none}
   .arSnd[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#fff}
-  model-viewer[ar-status="session-started"] .acts .arSnd{display:inline-flex}
+  model-viewer[data-ar] .acts .arSnd{display:inline-flex}
   .toast{position:absolute;left:50%;top:12px;transform:translateX(-50%);max-width:92%;background:rgba(28,22,20,.88);color:#fff;font-size:13px;font-weight:700;line-height:1.5;padding:8px 14px;border-radius:14px;text-align:center;pointer-events:none;opacity:0;transition:opacity .2s}
   .toast.show{opacity:1}
-  model-viewer[ar-status="session-started"] .toast{top:calc(env(safe-area-inset-top) + 64px)}
-  model-viewer[ar-status="session-started"] .acts{bottom:calc(env(safe-area-inset-bottom) + 28px)}
+  model-viewer[data-ar] .toast{top:calc(env(safe-area-inset-top) + 64px)}
+  model-viewer[data-ar] .acts{bottom:calc(env(safe-area-inset-bottom) + 28px)}
   .bar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:12px 14px 6px}
   .bar button{font-size:16px;padding:13px 22px;min-height:48px}
   #arBtn{background:var(--red);color:#fff}
@@ -87,7 +87,10 @@
   const mv=document.getElementById('mv'),arBtn=document.getElementById('arBtn'),note=document.getElementById('note'),snd=document.getElementById('snd'),au=document.getElementById('au'),toastEl=document.getElementById('toast'),actRow=document.getElementById('actRow'),charsEl=document.getElementById('chars'),arSnd=document.getElementById('arSnd'),resetBtn=document.getElementById('resetRot');
   let tt=null;
   function toast(msg,ms=2600){toastEl.textContent=msg;toastEl.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>toastEl.classList.remove('show'),ms);}
-  const inAR=()=>mv.getAttribute('ar-status')==='session-started';
+  // AR中かどうか（床に置いた後は ar-status が object-placed に変わるので両方を見る）
+  const AR_ON=['session-started','object-placed'];
+  mv.addEventListener('ar-status',e=>{ mv.toggleAttribute('data-ar',AR_ON.includes(e.detail.status)); });
+  const inAR=()=>mv.hasAttribute('data-ar');
 
   // ===== 効果音（その場で合成） =====
   let ac=null;
