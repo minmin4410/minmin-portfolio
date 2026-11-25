@@ -97,5 +97,38 @@
   ],
   "cw": 1536,
   "ch": 2048
+ },
+ {
+  "id": "kokou-no-buruma-04",
+  "title": "孤高のブルマ",
+  "episode": "第4話　ロボカニ亭",
+  "author": "minmin",
+  "tagline": "美味いですねぇ",
+  "cover": "img/kokou-no-buruma-04-ep4-cover.jpg",
+  "spreads": [
+   {
+    "img": "img/kokou-no-buruma-04-ep4-s1.jpg",
+    "label": "見開き①　ロボカニ亭〜配膳ロボット",
+    "w": 2016,
+    "h": 1344,
+    "gx": 1008
+   },
+   {
+    "img": "img/kokou-no-buruma-04-ep4-s2.jpg",
+    "label": "見開き②　カニ山盛り〜ズキューン",
+    "w": 2016,
+    "h": 1344,
+    "gx": 1012
+   },
+   {
+    "img": "img/kokou-no-buruma-04-ep4-s3.jpg",
+    "label": "見開き③　美味いですねぇ〜店主の見送り",
+    "w": 2016,
+    "h": 1344,
+    "gx": 980
+   }
+  ],
+  "cw": 1536,
+  "ch": 2048
  }
 ]
